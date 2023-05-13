@@ -1,0 +1,64 @@
+/* base */
+*{  box-sizing: border-box;
+    margin: 0 ;
+    padding: 0;
+}
+
+html {
+    height: 100vh;
+    font-size: 10px;
+    scroll-behavior: smooth; 
+}
+
+.body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 500px;
+    min-height: 500px;
+}
+
+/* header */
+
+/* main */
+.minesweeper-block {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    border: 1px solid red
+}
+
+.minesweeper-block__information {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    padding: 5px;
+}
+.information__flag {
+    padding: 10px;
+    border: 2px solid blue
+}
+.information__logo {
+  
+    padding: 10px;
+    border: 2px solid blue
+}
+.information__timer {
+    padding: 10px;
+    border: 2px solid blue
+}
+
+.grid-btn-easy {
+    display: grid;
+    grid-template-columns: repeat(10, minmax(10px, 50px));
+    grid-template-rows: repeat(10, minmax(10px, 50px));
+}
+
