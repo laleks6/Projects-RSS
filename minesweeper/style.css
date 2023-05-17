@@ -22,25 +22,28 @@ html {
     align-items: center;
     min-width: 500px;
     min-height: 500px;
+    padding: 20px;
+    padding-top: 80px;
 }
 
 /* header */
 
 /* main */
 .minesweeper-block {
+    position: relative;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 100%;
+    width: 100%;;
     border: 1px solid red
 }
 
 .minesweeper-block__information {
-    width: 100%;
     display: flex;
-    justify-content: space-around;
+    flex-direction: column;
+    justify-content: center;
     padding: 5px;
+    gap: 20px
 }
 .information__flag {
     padding: 10px;
@@ -55,10 +58,52 @@ html {
     padding: 10px;
     border: 2px solid blue
 }
+.minesweeper-block__playing-field {
 
+
+}
 .grid-btn-easy {
     display: grid;
     grid-template-columns: repeat(10, minmax(10px, 50px));
     grid-template-rows: repeat(10, minmax(10px, 50px));
+}
+.btn {
+    background-color: #4676d7;
+}
+.btn--unlock {
+    background-color:rgb(188, 192, 196)
+}
+
+/* light-blue-color-1 */
+.btn--number-color-1 {
+    color:#0600ff;
+}
+/* green-color-2 */
+.btn--number-color-2 {
+    color:#028105;
+}
+/* light-red-color-3 */
+.btn--number-color-3 {
+    color:#fc0200;
+}
+/* navy-blue-color-4 */
+.btn--number-color-4 {
+    color:#000182;
+}
+/* navy-red-color-5 */
+.btn--number-color-5 {
+   color:#850000;
+}
+/* sapphire-colo-6 */
+.btn--number-color-6 {
+    color:#018382;
+}
+/* purple-color-7 */
+.btn--number-color-7 {
+    color:#830181;
+}
+/* grey-color-8 */
+.btn--number-color-8 {
+    color:#747774;
 }
 
