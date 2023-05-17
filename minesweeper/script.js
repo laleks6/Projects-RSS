@@ -48,17 +48,32 @@ const playingField = document.querySelector('.minesweeper-block__playing-field')
 
 const quantity = 10;
 let countSecond = 0;
+let countMinutes = 0;
 let interval;
 
 function timeOut() {
-  countSecond++;
+  countSecond += 1;
   console.log(countSecond);
-  informationTime.textContent = countSecond;
+  console.log(countMinutes);
+
+  if (countSecond < 10) {
+    informationTime.textContent = `0${countMinutes}:0${countSecond}`;
+  } else if (countSecond >= 10 && countSecond < 60) {
+    informationTime.textContent = `0${countMinutes}:${countSecond}`;
+  } else if (countSecond >= 60) {
+    countSecond = 0;
+    countMinutes += 1;
+    informationTime.textContent = `0${countMinutes}:${countSecond}`;
+  }
+  if (countMinutes >= 10) {
+    informationTime.textContent = `${countMinutes}:${countSecond}`;
+  }
 }
-function timerOff(interval) {
-  interval = clearInterval(interval);
+function timerOff(el) {
+  let intervalValue = el;
+  intervalValue = clearInterval(intervalValue);
   informationTime.classList.toggle('active--timer');
-  return interval;
+  return intervalValue;
 }
 function time(el) {
   if (!informationTime.classList.contains('active--timer')) {
