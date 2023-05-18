@@ -21,15 +21,34 @@ mineSwiperBlock.className = 'minesweeper-block';
 
 const informationBlock = document.createElement('div');
 informationBlock.className = 'minesweeper-block__information';
+
 const informationFlagCount = document.createElement('div');
 informationFlagCount.className = 'information__flag';
+
+const numberBombs = document.createElement('div');
+numberBombs.className = 'information__nomber-bomb';
+const labelNumberBombs = document.createElement('label');
+labelNumberBombs.for = 'bombs';
+const inputNumberBombs = document.createElement('input');
+inputNumberBombs.type = 'number';
+inputNumberBombs.value = '10';
+inputNumberBombs.id = 'bombs';
+inputNumberBombs.name = 'bombs';
+inputNumberBombs.min = '10';
+inputNumberBombs.max = '99';
+
 const informationLogo = document.createElement('div');
 informationLogo.textContent = 'logo';
 informationLogo.className = 'information__logo';
+
 const informationTime = document.createElement('div');
 informationTime.textContent = '00:00';
 informationTime.className = 'information__timer';
+
 informationBlock.append(informationFlagCount);
+informationBlock.append(numberBombs);
+numberBombs.append(labelNumberBombs);
+numberBombs.append(inputNumberBombs);
 informationBlock.append(informationLogo);
 informationBlock.append(informationTime);
 
@@ -46,7 +65,7 @@ body.prepend(header);
 
 const playingField = document.querySelector('.minesweeper-block__playing-field');
 
-const quantityСells = 10;
+const quantityCells = 10;
 let countSecond = 0;
 let countMinutes = 0;
 let interval;
@@ -75,7 +94,7 @@ const creatBtn = (value) => {
   }
 };
 
-creatBtn(quantityСells);
+creatBtn(quantityCells);
 
 function timeOut() {
   countSecond += 1;
@@ -136,7 +155,7 @@ function addClassBomb(array, arrBtn) {
 function startGame(arrBtn, array, el) {
   if (!playingField.classList.contains('active-game')) {
     playingField.classList.toggle('active-game');
-    rundomNumver(quantityСells, array, el);
+    rundomNumver(quantityCells, array, el);
     addClassBomb(array, arrBtn);
   }
 }
@@ -203,20 +222,39 @@ function buttonAssembly(quantityValue, elValue, x, y) {
   }
   return '';
 }
-
-const clickbtn = (element) => {
-  if (element.target.classList.contains('btn')) {
-    time(element);
-    const { x } = element.target.dataset;
-    const { y } = element.target.dataset;
-    buttonAssembly(quantityСells, element.target, x, y);
-    console.log(element);
-    console.log(element.target);
-    console.log(element.target.classList);
-    console.log(`${element.target.dataset.y}--${element.target.dataset.x}`);
+const addFlag = (element) => {
+  const el = element;
+  console.log(element.button);
+  if (el.target.classList.contains('btn') && !el.target.classList.contains('btn--unlock') && playingField.classList.contains('active-game')) {
+    if (el.button === 2) {
+      console.log('нажал на правую кнопку');
+      el.target.textContent = 'f';
+      el.target.classList.add('flag');
+    }
   }
 };
-playingField.addEventListener('click', clickbtn);
+
+const mousedown = (element) => {
+  addFlag(element);
+};
+const mouseup = (element) => {
+  console.log(element.button);
+  if (element.target.classList.contains('btn')) {
+    if (element.button === 0) {
+      time(element);
+      const { x } = element.target.dataset;
+      const { y } = element.target.dataset;
+      buttonAssembly(quantityCells, element.target, x, y);
+      console.log(element);
+      console.log(element.target);
+      console.log(element.target.classList);
+      console.log(`${element.target.dataset.y}--${element.target.dataset.x}`);
+    }
+  }
+};
+playingField.addEventListener('mousedown', mousedown);
+playingField.addEventListener('mouseup', mouseup);
+playingField.addEventListener('contextmenu', (e) => { e.preventDefault(); return false; });
 
 // https://itp.uni-frankfurt.de/~mwagner/teaching/C_WS17/projects/Minesweeper.pdf
 // https://www.codewithfaraz.com/content/134/learn-how-to-create-a-minesweeper-game-with-html-css-and-javascript
