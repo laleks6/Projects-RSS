@@ -96,6 +96,7 @@ const creatBtn = (value) => {
 
 creatBtn(quantityCells);
 
+
 function timeOut() {
   countSecond += 1;
   if (countSecond < 10) {
@@ -227,19 +228,42 @@ const addFlag = (element) => {
   console.log(element.button);
   if (el.target.classList.contains('btn') && !el.target.classList.contains('btn--unlock') && playingField.classList.contains('active-game')) {
     if (el.button === 2) {
-      console.log('нажал на правую кнопку');
-      el.target.textContent = 'f';
-      el.target.classList.add('flag');
+      if (!el.target.classList.contains('flag')) {
+        console.log('нажал на правую кнопку');
+        el.target.textContent = 'f';
+        el.target.classList.toggle('flag');
+      } else {
+        el.target.textContent = '';
+        el.target.classList.toggle('flag');
+      }
     }
   }
 };
-
+const validationInput = () => {
+  let valid = true;
+  numberBombs.classList.remove('error-validation-input');
+  if (inputNumberBombs.validity.rangeOverflow) {
+    // alert('кол-во бомб привышено');
+    valid = false;
+    numberBombs.classList.add('error-validation-input');
+  } else if (inputNumberBombs.validity.rangeUnderflow) {
+    // alert('кол-во бомб меньше допустимого');
+    valid = false;
+    numberBombs.classList.add('error-validation-input');
+  } else {
+    // alert('vj;yj');
+    valid = true;
+  }
+  return valid;
+};
+inputNumberBombs.addEventListener('change', validationInput);
+inputNumberBombs.addEventListener('input', validationInput);
 const mousedown = (element) => {
   addFlag(element);
 };
 const mouseup = (element) => {
   console.log(element.button);
-  if (element.target.classList.contains('btn')) {
+  if (element.target.classList.contains('btn') && !element.target.classList.contains('flag') && validationInput()) {
     if (element.button === 0) {
       time(element);
       const { x } = element.target.dataset;

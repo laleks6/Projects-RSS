@@ -54,6 +54,28 @@ html {
     padding: 10px;
     border: 2px solid blue
 }
+.information__nomber-bomb {
+    display: inline-flex;
+}
+#bombs {
+    border: none;
+    outline: none;
+}
+.error-validation-input {
+    animation-name: shakes;
+    animation-duration: 100ms;
+    animation-iteration-count: 5;
+    animation-timing-function: ease;
+}
+@keyframes shakes {
+    0% {
+        transform: translateX(3px);
+        border-color: red;
+    }
+    100% {
+        transform: translateX(0px);
+    }
+}
 .information__logo {
   
     padding: 10px;
@@ -111,4 +133,6 @@ html {
 .btn--number-color-8 {
     color:#747774;
 }
+
+
 
