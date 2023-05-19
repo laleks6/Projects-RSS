@@ -22,6 +22,10 @@ mineSwiperBlock.className = 'minesweeper-block';
 const informationBlock = document.createElement('div');
 informationBlock.className = 'minesweeper-block__information';
 
+const reboot = document.createElement('div');
+reboot.className = 'reboot-btn';
+reboot.textContent = 'reboot';
+
 const informationFlagCount = document.createElement('div');
 informationFlagCount.className = 'information__flag';
 
@@ -46,6 +50,7 @@ informationTime.textContent = '00:00';
 informationTime.className = 'information__timer';
 
 informationBlock.append(informationFlagCount);
+informationBlock.append(reboot);
 informationBlock.append(numberBombs);
 numberBombs.append(labelNumberBombs);
 numberBombs.append(inputNumberBombs);
@@ -68,7 +73,7 @@ const playingField = document.querySelector('.minesweeper-block__playing-field')
 const quantityCells = 10;
 let countSecond = 0;
 let countMinutes = 0;
-let interval;
+let interval; // что чтобы интервал работал нужно выносить параметр в глобальную видимость
 
 // создание кнопок
 const creatBtn = (value) => {
@@ -76,7 +81,7 @@ const creatBtn = (value) => {
   let x = 0;
   let y = 0;
   if (quantityValue === 10) {
-    informationFlagCount.textContent = '10';
+    informationFlagCount.textContent = inputNumberBombs.value;
     playingFieldBlock.classList.add('grid-btn-easy');
     for (let i = 0; i < quantityValue * quantityValue; i += 1) {
       const btn = document.createElement('button');
@@ -95,7 +100,6 @@ const creatBtn = (value) => {
 };
 
 creatBtn(quantityCells);
-
 
 function timeOut() {
   countSecond += 1;
@@ -191,6 +195,16 @@ function bombCount(el, quantity, x, y) {
   return count;
 }
 
+// при клике на бомбу открывает все бомбы и завершает игру
+const clickBomb = () => {
+  const btnBombs = document.getElementsByClassName('bomb');
+  console.log(btnBombs);
+  Array.from(btnBombs).forEach((e) => {
+    e.textContent = 'X';
+  });
+  playingField.classList.toggle('active-game');
+  playingField.classList.toggle('game-over');
+};
 // функция сборщик всего функционала по кноакам
 function buttonAssembly(quantityValue, elValue, x, y) {
   const arrBtn = document.getElementsByClassName('btn');
@@ -198,12 +212,12 @@ function buttonAssembly(quantityValue, elValue, x, y) {
   let el = elValue;
   el = arrBtn[+`${y}${x}`];
   if (x >= 0 && y >= 0 && y < quantityValue && x < quantityValue) {
-    if (!el.classList.contains('active-btn')) {
+    if (!el.classList.contains('btn--unlock')) {
       startGame(arrBtn, array, el);
-      el.classList.add('active-btn', 'btn--unlock');
+      el.classList.add('btn--unlock');
       el.textContent = ' ';
       if (el.classList.contains('bomb')) {
-        el.textContent = 'X';
+        clickBomb();
       } else {
         const count = bombCount(el, quantityValue, x, y);
         if (count === 0) {
@@ -223,16 +237,23 @@ function buttonAssembly(quantityValue, elValue, x, y) {
   }
   return '';
 }
+let countFlag = 0;
 const addFlag = (element) => {
+  countFlag = +informationFlagCount.textContent;
+  console.log(`count flag --- ${countFlag}`);
   const el = element;
   console.log(element.button);
   if (el.target.classList.contains('btn') && !el.target.classList.contains('btn--unlock') && playingField.classList.contains('active-game')) {
     if (el.button === 2) {
       if (!el.target.classList.contains('flag')) {
+        countFlag -= 1;
+        informationFlagCount.textContent = countFlag;
         console.log('нажал на правую кнопку');
         el.target.textContent = 'f';
         el.target.classList.toggle('flag');
       } else {
+        countFlag += 1;
+        informationFlagCount.textContent = countFlag;
         el.target.textContent = '';
         el.target.classList.toggle('flag');
       }
@@ -241,18 +262,21 @@ const addFlag = (element) => {
 };
 const validationInput = () => {
   let valid = true;
-  numberBombs.classList.remove('error-validation-input');
-  if (inputNumberBombs.validity.rangeOverflow) {
+  if (!playingField.classList.contains('active-game')) {
+    numberBombs.classList.remove('error-validation-input');
+    if (inputNumberBombs.validity.rangeOverflow) {
     // alert('кол-во бомб привышено');
-    valid = false;
-    numberBombs.classList.add('error-validation-input');
-  } else if (inputNumberBombs.validity.rangeUnderflow) {
+      valid = false;
+      numberBombs.classList.add('error-validation-input');
+    } else if (inputNumberBombs.validity.rangeUnderflow) {
     // alert('кол-во бомб меньше допустимого');
-    valid = false;
-    numberBombs.classList.add('error-validation-input');
-  } else {
-    // alert('vj;yj');
-    valid = true;
+      valid = false;
+      numberBombs.classList.add('error-validation-input');
+    } else {
+    // изменение количества флагов в зависимости от бомб
+      informationFlagCount.textContent = inputNumberBombs.value;
+      valid = true;
+    }
   }
   return valid;
 };
@@ -263,7 +287,7 @@ const mousedown = (element) => {
 };
 const mouseup = (element) => {
   console.log(element.button);
-  if (element.target.classList.contains('btn') && !element.target.classList.contains('flag') && validationInput()) {
+  if (element.target.classList.contains('btn') && !element.target.classList.contains('flag') && validationInput() && !playingField.classList.contains('game-over')) {
     if (element.button === 0) {
       time(element);
       const { x } = element.target.dataset;

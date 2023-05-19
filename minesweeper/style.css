@@ -57,6 +57,11 @@ html {
 .information__nomber-bomb {
     display: inline-flex;
 }
+.reboot-btn {
+    padding: 10px;
+    border: 2px solid blue;
+    cursor: pointer;
+}
 #bombs {
     border: none;
     outline: none;
