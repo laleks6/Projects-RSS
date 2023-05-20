@@ -77,7 +77,7 @@ let interval; // что чтобы интервал работал нужно в
 
 // создание кнопок
 const creatBtn = (value) => {
-  const quantityValue = value;
+  const quantityValue = +value;
   let x = 0;
   let y = 0;
   if (quantityValue === 10) {
@@ -101,6 +101,13 @@ const creatBtn = (value) => {
 
 creatBtn(quantityCells);
 
+const deleteBtn = () => {
+  const btn = document.getElementsByClassName('btn');
+  console.log(btn);
+  Array.from(btn).forEach((el) => {
+    el.remove();
+  });
+};
 function timeOut() {
   countSecond += 1;
   if (countSecond < 10) {
@@ -118,7 +125,7 @@ function timeOut() {
 }
 function timerOff(el) {
   let intervalValue = el;
-  intervalValue = clearInterval(intervalValue);
+  intervalValue = clearInterval(intervalValue); // приостановка setInterval
   informationTime.classList.toggle('active--timer');
   return intervalValue;
 }
@@ -129,6 +136,12 @@ function time(el) {
   }
   if (el.target.classList.contains('bomb')) {
     timerOff(interval);
+  }
+  if (el.target.classList.contains('reboot-btn')) {
+    timerOff(interval);
+    informationTime.textContent = '00:00';
+    countSecond = 0;
+    countMinutes = 0;
   }
 }
 
@@ -300,10 +313,16 @@ const mouseup = (element) => {
     }
   }
 };
+const clickReset = (element) => {
+  time(element);
+  deleteBtn();
+  playingField.classList.remove('game-over');
+  playingFieldBlock.classList.remove('grid-btn-easy');
+  playingFieldBlock.classList.remove('active-game');
+  console.log(inputNumberBombs.value);
+  creatBtn(inputNumberBombs.value);
+};
+reboot.addEventListener('click', clickReset);
 playingField.addEventListener('mousedown', mousedown);
 playingField.addEventListener('mouseup', mouseup);
 playingField.addEventListener('contextmenu', (e) => { e.preventDefault(); return false; });
-
-// https://itp.uni-frankfurt.de/~mwagner/teaching/C_WS17/projects/Minesweeper.pdf
-// https://www.codewithfaraz.com/content/134/learn-how-to-create-a-minesweeper-game-with-html-css-and-javascript
-//
