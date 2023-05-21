@@ -19,6 +19,19 @@ wrap.className = 'wrap';
 const mineSwiperBlock = document.createElement('div');
 mineSwiperBlock.className = 'minesweeper-block';
 
+const gameBifficulty = document.createElement('div');
+gameBifficulty.className = 'minesweeper-block__game-difficulty';
+
+const easy = document.createElement('button');
+easy.className = 'game-difficulty__easy-btn change-field-btn';
+easy.textContent = 'easy';
+const normal = document.createElement('button');
+normal.className = 'game-difficulty__normal-btn change-field-btn';
+normal.textContent = 'normal';
+const hard = document.createElement('button');
+hard.className = 'game-difficulty__hard-btn change-field-btn';
+hard.textContent = 'hard';
+
 const informationBlock = document.createElement('div');
 informationBlock.className = 'minesweeper-block__information';
 
@@ -50,6 +63,10 @@ informationTime.textContent = '00:00';
 informationTime.className = 'information__timer';
 
 informationBlock.append(informationFlagCount);
+informationBlock.append(gameBifficulty);
+gameBifficulty.append(easy);
+gameBifficulty.append(normal);
+gameBifficulty.append(hard);
 informationBlock.append(reboot);
 informationBlock.append(numberBombs);
 numberBombs.append(labelNumberBombs);
@@ -70,40 +87,52 @@ body.prepend(header);
 
 const playingField = document.querySelector('.minesweeper-block__playing-field');
 
-const quantityCells = 10;
+let quantityCells = 10;
 let countSecond = 0;
 let countMinutes = 0;
 let interval; // что чтобы интервал работал нужно выносить параметр в глобальную видимость
 
 // создание кнопок
 const creatBtn = (value) => {
+  playingFieldBlock.classList.remove('active-game');
   const quantityValue = +value;
   let x = 0;
   let y = 0;
+  informationFlagCount.textContent = inputNumberBombs.value;
   if (quantityValue === 10) {
-    informationFlagCount.textContent = inputNumberBombs.value;
+    playingField.classList.remove('game-over');
+    playingFieldBlock.classList.remove('grid-btn-normal');
+    playingFieldBlock.classList.remove('grid-btn-hard');
     playingFieldBlock.classList.add('grid-btn-easy');
-    for (let i = 0; i < quantityValue * quantityValue; i += 1) {
-      const btn = document.createElement('button');
-      btn.className = 'btn number';
-      btn.id = i;
-      if (x >= quantityValue) {
-        x = 0;
-        y += 1;
-      }
-      btn.dataset.x = x;
-      btn.dataset.y = y;
-      x += 1;
-      playingFieldBlock.append(btn);
+  } else if (quantityValue === 15) {
+    playingField.classList.remove('game-over');
+    playingFieldBlock.classList.remove('grid-btn-easy');
+    playingFieldBlock.classList.remove('grid-btn-hard');
+    playingFieldBlock.classList.add('grid-btn-normal');
+  } else if (quantityValue === 25) {
+    playingField.classList.remove('game-over');
+    playingFieldBlock.classList.remove('grid-btn-easy');
+    playingFieldBlock.classList.remove('grid-btn-normal');
+    playingFieldBlock.classList.add('grid-btn-hard');
+  }
+  for (let i = 0; i < quantityValue * quantityValue; i += 1) {
+    const btn = document.createElement('button');
+    btn.className = 'btn number';
+    btn.id = i;
+    if (x >= quantityValue) {
+      x = 0;
+      y += 1;
     }
+    btn.dataset.x = x;
+    btn.dataset.y = y;
+    x += 1;
+    playingFieldBlock.append(btn);
   }
 };
-
 creatBtn(quantityCells);
 
 const deleteBtn = () => {
   const btn = document.getElementsByClassName('btn');
-  console.log(btn);
   Array.from(btn).forEach((el) => {
     el.remove();
   });
@@ -137,7 +166,7 @@ function time(el) {
   if (el.target.classList.contains('bomb')) {
     timerOff(interval);
   }
-  if (el.target.classList.contains('reboot-btn')) {
+  if (el.target.classList.contains('reboot-btn') || el.target.classList.contains('change-field-btn') ) {
     timerOff(interval);
     informationTime.textContent = '00:00';
     countSecond = 0;
@@ -162,7 +191,8 @@ function rundomNumver(quantityValue, arrayValue, el) {
 
 // добавленияе класса для рандомных значений в массиве
 function addClassBomb(array, arrBtn) {
-  for (let i = 0; i < array.slice(0, 10).length; i += 1) {
+  const quantityBomb = inputNumberBombs.value;
+  for (let i = 0; i < array.slice(0, quantityBomb).length; i += 1) {
     const btn = arrBtn[array[i]];
     btn.classList.add('bomb');
     btn.classList.remove('number');
@@ -181,7 +211,7 @@ function startGame(arrBtn, array, el) {
 // функция нахождение бомбы
 function findingBomb(x, y, el, quantity) {
   const arrBtn = document.getElementsByClassName('btn');
-  const arr = [...arrBtn][+`${y}${x}`];
+  const arr = [...arrBtn][+y * +quantity + +x];
   if (x >= 0 && y >= 0 && y < quantity && x < quantity) {
     if (arr.classList.contains('bomb')) {
       return true;
@@ -194,11 +224,7 @@ function findingBomb(x, y, el, quantity) {
 // подсчет бомб вокруг клетки
 function bombCount(el, quantity, x, y) {
   let count = 0;
-  console.log(el);
-  console.log(`${x} - x`);
-  console.log(`${y} - y`);
   for (let i = -1; i <= 1; i += 1) {
-    console.log(`${i}iiiii`);
     for (let k = -1; k <= 1; k += 1) {
       if (findingBomb(+x + i, +y + k, el, quantity)) {
         count += 1;
@@ -211,7 +237,6 @@ function bombCount(el, quantity, x, y) {
 // при клике на бомбу открывает все бомбы и завершает игру
 const clickBomb = () => {
   const btnBombs = document.getElementsByClassName('bomb');
-  console.log(btnBombs);
   Array.from(btnBombs).forEach((e) => {
     e.textContent = 'X';
   });
@@ -223,7 +248,9 @@ function buttonAssembly(quantityValue, elValue, x, y) {
   const arrBtn = document.getElementsByClassName('btn');
   const array = [];
   let el = elValue;
-  el = arrBtn[+`${y}${x}`];
+  //el = arrBtn[+`${y}${x}`];
+  el = arrBtn[+y * +quantityValue + +x];
+  console.log(`${el} === eeeeeeeellll`);
   if (x >= 0 && y >= 0 && y < quantityValue && x < quantityValue) {
     if (!el.classList.contains('btn--unlock')) {
       startGame(arrBtn, array, el);
@@ -232,7 +259,7 @@ function buttonAssembly(quantityValue, elValue, x, y) {
       if (el.classList.contains('bomb')) {
         clickBomb();
       } else {
-        const count = bombCount(el, quantityValue, x, y);
+        const count = bombCount(el, quantityValue, +x, +y);
         if (count === 0) {
           for (let i = -1; i <= 1; i += 1) {
             for (let k = -1; k <= 1; k += 1) {
@@ -253,9 +280,7 @@ function buttonAssembly(quantityValue, elValue, x, y) {
 let countFlag = 0;
 const addFlag = (element) => {
   countFlag = +informationFlagCount.textContent;
-  console.log(`count flag --- ${countFlag}`);
   const el = element;
-  console.log(element.button);
   if (el.target.classList.contains('btn') && !el.target.classList.contains('btn--unlock') && playingField.classList.contains('active-game')) {
     if (el.button === 2) {
       if (!el.target.classList.contains('flag')) {
@@ -293,8 +318,7 @@ const validationInput = () => {
   }
   return valid;
 };
-inputNumberBombs.addEventListener('change', validationInput);
-inputNumberBombs.addEventListener('input', validationInput);
+
 const mousedown = (element) => {
   addFlag(element);
 };
@@ -306,10 +330,6 @@ const mouseup = (element) => {
       const { x } = element.target.dataset;
       const { y } = element.target.dataset;
       buttonAssembly(quantityCells, element.target, x, y);
-      console.log(element);
-      console.log(element.target);
-      console.log(element.target.classList);
-      console.log(`${element.target.dataset.y}--${element.target.dataset.x}`);
     }
   }
 };
@@ -318,11 +338,32 @@ const clickReset = (element) => {
   deleteBtn();
   playingField.classList.remove('game-over');
   playingFieldBlock.classList.remove('grid-btn-easy');
-  playingFieldBlock.classList.remove('active-game');
-  console.log(inputNumberBombs.value);
-  creatBtn(inputNumberBombs.value);
+  creatBtn(10);
 };
+const easyClick = (element) => {
+  time(element);
+  quantityCells = 10;
+  deleteBtn();
+  creatBtn(quantityCells);
+};
+const normalClick = (element) => {
+  time(element);
+  quantityCells = 15;
+  deleteBtn();
+  creatBtn(quantityCells);
+};
+const hardClick = (element) => {
+  time(element);
+  quantityCells = 25;
+  deleteBtn();
+  creatBtn(quantityCells);
+};
+easy.addEventListener('click', easyClick);
+normal.addEventListener('click', normalClick);
+hard.addEventListener('click', hardClick);
 reboot.addEventListener('click', clickReset);
+inputNumberBombs.addEventListener('change', validationInput);
+inputNumberBombs.addEventListener('input', validationInput);
 playingField.addEventListener('mousedown', mousedown);
 playingField.addEventListener('mouseup', mouseup);
 playingField.addEventListener('contextmenu', (e) => { e.preventDefault(); return false; });
