@@ -56,10 +56,6 @@ inputNumberBombs.name = 'bombs';
 inputNumberBombs.min = '10';
 inputNumberBombs.max = '99';
 
-const informationLogo = document.createElement('div');
-informationLogo.textContent = 'logo';
-informationLogo.className = 'information__logo';
-
 const informationTime = document.createElement('div');
 informationTime.textContent = '00:00';
 informationTime.className = 'information__timer';
