@@ -5,15 +5,16 @@
 }
 
 html {
-    height: 100vh;
     font-size: 10px;
     scroll-behavior: smooth; 
+
 }
 
 .body {
     display: flex;
     justify-content: center;
     align-items: center;
+
 }
 
 .wrap {
@@ -21,7 +22,7 @@ html {
     justify-content: center;
     align-items: center;
     min-width: 500px;
-    min-height: 500px;
+    min-height: 100vh;
     padding: 20px;
     padding-top: 80px;
 }
@@ -29,14 +30,24 @@ html {
 /* header */
 
 /* main */
+.main {
+    
+    /* background-color: #bf8e4d;
+    #8cabd1 */
+    background-color: #cae5e0;
+
+}
 .minesweeper-block {
     position: relative;
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
+    flex-wrap: wrap;
     width: 100%;
     height: 100%;
-    border: 1px solid red
+}
+.dark-theem {
+    background-color: #bb4632;
 }
 .minesweeper-block__game-difficulty {
     display: flex;
@@ -47,28 +58,62 @@ html {
     flex-direction: column;
     justify-content: center;
     padding: 5px;
-    gap: 20px
+    gap: 20px;
+    font-family: 'VT323', monospace;
+    font-size: 1.4rem;
+    color: #000;
+}
+.change-field-btn,
+.reboot-btn {
+	border-bottom: 3px inset rgba(0,0,0,.5);
+	border-left: 3px inset rgba(0,0,0,.5);
+	border-right: 3px inset rgba(255,255,255,.5);
+	border-top: 3px inset rgba(255,255,255,.5);
+	color: #000;
+	cursor: pointer;
+	display: inline-block;
+	padding: 5px;
+	text-transform: uppercase;
+    font-size: 1.4rem;
+	width: auto;
+    font-family: 'VT323', monospace;
+}
+.game-difficulty__easy-btn {
+    background-color: #881400;
+}
+.game-difficulty__easy-btn:hover {
+    background: #A81000;
+}
+.game-difficulty__normal-btn {
+    background-color: #005800;
+}
+.game-difficulty__normal-btn:hover {
+    background: #006800;
+}
+.game-difficulty__hard-btn {
+    background-color: #0000BC;
+}
+.game-difficulty__hard-btn:hover {
+    background: #0000FC;
 }
 .information__flag {
     padding: 10px;
-    border: 2px solid blue
 }
 
 .information__nomber-bomb {
     padding: 10px;
-    border: 2px solid blue
-}
-.information__nomber-bomb {
     display: inline-flex;
 }
+
 .reboot-btn {
-    padding: 10px;
-    border: 2px solid blue;
     cursor: pointer;
+    background-color: #BCBCBC;
 }
 #bombs {
     border: none;
     outline: none;
+    background: transparent;
+    color: #000;
 }
 .error-validation-input {
     animation-name: shakes;
@@ -86,71 +131,99 @@ html {
     }
 }
 .information__logo {
-  
     padding: 10px;
-    border: 2px solid blue
 }
 .information__timer {
     padding: 10px;
-    border: 2px solid blue
+    font-family: 'Orbitron', sans-serif;
 }
 .minesweeper-block__playing-field {
-
+    background-color: #fcf9fc;
 
 }
 .grid-btn-easy {
     display: grid;
-    grid-template-columns: repeat(10, minmax(10px, 50px));
-    grid-template-rows: repeat(10, minmax(10px, 50px));
+    grid-template-columns: repeat(10, minmax(10px, 45px));
+    grid-template-rows: repeat(10, minmax(10px, 45px));
+    gap: 3px
 }
 .grid-btn-normal {
     display: grid;
-    grid-template-columns: repeat(15, minmax(10px, 50px));
-    grid-template-rows: repeat(15, minmax(10px, 50px));
+    grid-template-columns: repeat(15, minmax(10px, 35px));
+    grid-template-rows: repeat(15, minmax(10px, 35px));
 }
 .grid-btn-hard {
     display: grid;
-    grid-template-columns: repeat(25, minmax(10px, 50px));
-    grid-template-rows: repeat(25, minmax(10px, 50px));
+    grid-template-columns: repeat(25, minmax(10px, 25px));
+    grid-template-rows: repeat(25, minmax(10px, 25px));
 }
 .btn {
-    background-color: #4676d7;
+    /*background-color: #4676d7;
+    background-color: #5a98bc;*/
+    background-color: #323c7b;
+    font-family: 'Verdana', sans-serif;
+    font-weight: 700;
+    
 }
 .btn--unlock {
-    background-color:rgb(188, 192, 196)
+    /*background-color:rgb(188, 192, 196)*/
+    background-color: #fcf9fc;
+}
+
+.flag {
+    background-image: url('./assets/img/flag.png');
+    background-size: 18px;
+    background-repeat: no-repeat;
+    background-position:center;
+
+}
+.btn-img-bomb {
+    background-image: url('./assets/img/mine.png');
+    background-size: 18px;
+    background-repeat: no-repeat;
+    background-position:center;
 }
 
 /* light-blue-color-1 */
 .btn--number-color-1 {
     color:#0600ff;
+    font-weight: 700;
 }
 /* green-color-2 */
 .btn--number-color-2 {
     color:#028105;
+    font-weight: 700;
 }
 /* light-red-color-3 */
 .btn--number-color-3 {
     color:#fc0200;
+    font-weight: 700;
+    
 }
 /* navy-blue-color-4 */
 .btn--number-color-4 {
     color:#000182;
+    font-weight: 700;
 }
 /* navy-red-color-5 */
 .btn--number-color-5 {
    color:#850000;
+   font-weight: 700;
 }
 /* sapphire-colo-6 */
 .btn--number-color-6 {
     color:#018382;
+    font-weight: 700;
 }
 /* purple-color-7 */
 .btn--number-color-7 {
     color:#830181;
+    font-weight: 700;
 }
 /* grey-color-8 */
 .btn--number-color-8 {
     color:#747774;
+    font-weight: 700;
 }
 
 
