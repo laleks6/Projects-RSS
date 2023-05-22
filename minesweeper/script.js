@@ -176,13 +176,15 @@ const creatBtn = (value) => {
 creatBtn(quantityCells);
 
 const winner = () => {
-  if (playingField.classList.contains('grid-btn-hard')) {
-    imgWinner.classList.add('block-winner-gif-hard');
-  }
+  imgWinner.classList.toggle('block-winner-gif-hard');
   timeFinished.textContent = `${informationTime.textContent}`;
-  winnerBlock.classList.add('block-winner--transition');
+  winnerBlock.classList.toggle('block-winner--transition');
 };
-
+const removeWinner = () => {
+  imgWinner.classList.toggle('block-winner-gif-hard');
+  timeFinished.textContent = `${informationTime.textContent}`;
+  winnerBlock.classList.toggle('block-winner--transition');
+};
 const deleteBtn = () => {
   const btn = document.getElementsByClassName('btn');
   Array.from(btn).forEach((el) => {
@@ -301,6 +303,7 @@ const countNumber = () => {
   if (arrNumber.length === 0) {
     playingField.classList.remove('active-game');
     playingField.classList.add('game-over');
+    winner();
   }
 };
 // при клике на бомбу открывает все бомбы и завершает игру
@@ -312,6 +315,7 @@ const clickBomb = (el) => {
     e.classList.add('btn-img-bomb');
     e.classList.add('btn--unlock');
   });
+  winner();
   playingField.classList.remove('active-game');
   playingField.classList.add('game-over');
 };
@@ -423,7 +427,6 @@ const mousedown = (element) => {
   }
 };
 const mouseup = (element) => {
-  winner();
   if (element.target.classList.contains('btn') && !element.target.classList.contains('flag') && validationInput() && !playingField.classList.contains('game-over')) {
     if (element.button === 0) {
       if (main.classList.contains('main--audio-active')) {
@@ -490,6 +493,7 @@ const clickTheme = () => {
     iconThemeImg.src = './//assets///img////icons8-moon-64.png';
   }
 };
+winnerBlock.addEventListener('click', removeWinner);
 audioBlock.addEventListener('click', clickAudio);
 iconTheme.addEventListener('click', clickTheme);
 easy.addEventListener('click', easyClick);
