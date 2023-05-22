@@ -10,7 +10,6 @@ logo.className = 'logo';
 header.prepend(logo);
 
 // main
-const flagImg = './assets/img/flag.png';
 
 const main = document.createElement('main');
 main.className = 'main';
@@ -38,7 +37,7 @@ const informationBlock = document.createElement('div');
 informationBlock.className = 'minesweeper-block__information';
 
 const reboot = document.createElement('div');
-reboot.className = 'reboot-btn';
+reboot.className = 'reboot-btn change-field-btn';
 reboot.textContent = 'reboot';
 
 const informationFlagCount = document.createElement('div');
@@ -49,6 +48,7 @@ numberBombs.className = 'information__nomber-bomb';
 const labelNumberBombs = document.createElement('label');
 labelNumberBombs.for = 'bombs';
 const inputNumberBombs = document.createElement('input');
+inputNumberBombs.className = 'input-bomb';
 inputNumberBombs.type = 'number';
 inputNumberBombs.value = '10';
 inputNumberBombs.id = 'bombs';
@@ -64,6 +64,10 @@ const informationTime = document.createElement('div');
 informationTime.textContent = '00:00';
 informationTime.className = 'information__timer';
 
+const informationClick = document.createElement('div');
+informationClick.textContent = '0';
+informationClick.className = 'information__click';
+
 informationBlock.append(reboot);
 informationBlock.append(gameBifficulty);
 gameBifficulty.append(easy);
@@ -75,6 +79,7 @@ numberBombs.append(labelNumberBombs);
 numberBombs.append(inputNumberBombs);
 informationBlock.append(informationLogo);
 informationBlock.append(informationTime);
+informationBlock.append(informationClick);
 
 const playingFieldBlock = document.createElement('div');
 playingFieldBlock.className = 'minesweeper-block__playing-field';
@@ -87,12 +92,49 @@ mineSwiperBlock.append(playingFieldBlock);
 body.prepend(main);
 body.prepend(header);
 
+// block finish
+const winnerBlock = document.createElement('div');
+const imgWinner = document.createElement('img');
+const result = document.createElement('div');
+const timeFinished = document.createElement('div');
+const countMove = document.createElement('div');
+winnerBlock.className = 'maine--block-winner';
+result.className = 'block-winner__result';
+imgWinner.className = 'block-winner-gif';
+timeFinished.className = 'block-winner__time-finished';
+countMove.className = 'block-winner__count-move';
+main.prepend(winnerBlock);
+winnerBlock.prepend(result);
+winnerBlock.prepend(imgWinner);
+result.prepend(timeFinished);
+result.prepend(countMove);
+
+// light and dark theme
+const iconTheme = document.createElement('div');
+const iconThemeImg = document.createElement('img');
+iconTheme.className = 'icon-Theme';
+iconThemeImg.className = 'icon-Theme__img';
+main.prepend(iconTheme);
+iconTheme.prepend(iconThemeImg);
+main.classList.add('sweet');
+iconThemeImg.src = './//assets///img///icons8-sun-64.png';
+
+// audio
+const audioBlock = document.createElement('div');
+audioBlock.className = "audio-block"
+const audioIcon = document.createElement('img');
+audioIcon.className = "audio-img"
+audioBlock.append(audioIcon);
+main.prepend(audioBlock);
+audioIcon.src = './//assets///img///icons8-audio-100.png';
+
 const playingField = document.querySelector('.minesweeper-block__playing-field');
 
 let quantityCells = 10;
 let countSecond = 0;
 let countMinutes = 0;
 let interval; // что чтобы интервал работал нужно выносить параметр в глобальную видимость
+let countClick = 0;
 
 // создание кнопок
 const creatBtn = (value) => {
@@ -134,7 +176,11 @@ const creatBtn = (value) => {
 creatBtn(quantityCells);
 
 const winner = () => {
-
+  if (playingField.classList.contains('grid-btn-hard')) {
+    imgWinner.classList.add('block-winner-gif-hard');
+  }
+  timeFinished.textContent = `${informationTime.textContent}`;
+  winnerBlock.classList.add('block-winner--transition');
 };
 const loose = () => {
 
@@ -288,7 +334,7 @@ const addFlag = (element) => {
         countFlag -= 1;
         informationFlagCount.textContent = countFlag;
         console.log('нажал на правую кнопку');
-        //el.target.innerHtml = flagImg;
+        // el.target.innerHtml = flagImg;
         el.target.classList.toggle('flag');
       } else {
         countFlag += 1;
@@ -366,15 +412,35 @@ const validationInput = () => {
   return valid;
 };
 
+const clickLeftBtnAudio = () => {
+  const audio = new Audio('.///assets///sound///MI_SFX 25.mp3');
+  audio.play();
+};
+const clickRightBtnAudio = () => {
+  const audio = new Audio('.///assets///sound///MI_SFX 05.mp3');
+  audio.play();
+};
+
 const mousedown = (element) => {
-  const { x } = element.target.dataset;
-  const { y } = element.target.dataset;
-  addFlag(element, x, y, quantityCells);
+  if (element.button === 2) {
+    if (main.classList.contains('main--audio-active')) {
+      clickRightBtnAudio();
+    }
+    const { x } = element.target.dataset;
+    const { y } = element.target.dataset;
+    addFlag(element, x, y, quantityCells);
+  }
 };
 const mouseup = (element) => {
+  winner();
   console.log(element.button);
   if (element.target.classList.contains('btn') && !element.target.classList.contains('flag') && validationInput() && !playingField.classList.contains('game-over')) {
     if (element.button === 0) {
+      if (main.classList.contains('main--audio-active')) {
+        clickLeftBtnAudio();
+      }
+      countClick += 1;
+      informationClick.textContent = countClick;
       time(element);
       const { x } = element.target.dataset;
       const { y } = element.target.dataset;
@@ -385,6 +451,7 @@ const mouseup = (element) => {
 const clickReset = (element) => {
   time(element);
   deleteBtn();
+  informationClick.textContent = '0';
   playingField.classList.remove('game-over');
   playingFieldBlock.classList.remove('grid-btn-easy');
   creatBtn(quantityCells);
@@ -407,6 +474,34 @@ const hardClick = (element) => {
   deleteBtn();
   creatBtn(quantityCells);
 };
+const clickAudio = () => {
+  main.classList.toggle('main--audio-active');
+};
+
+const clickTheme = () => {
+  const btn = document.getElementsByClassName('btn');
+  const btnDifficulty = document.getElementsByClassName('change-field-btn');
+  main.classList.toggle('sweet');
+  main.classList.toggle('dark');
+  main.classList.toggle('main--dark-theem');
+  informationFlagCount.classList.toggle('dark__color-text');
+  inputNumberBombs.classList.toggle('dark__color-text');
+  informationTime.classList.toggle('dark__color-text');
+  informationClick.classList.toggle('dark__color-text');
+  Array.from(btn).forEach((el) => {
+    el.classList.toggle('main--dark-theem_btn');
+  });
+  Array.from(btnDifficulty).forEach((el) => {
+    el.classList.toggle('dark__color-text');
+  });
+  if (main.classList.contains('sweet')) {
+    iconThemeImg.src = './//assets///img///icons8-sun-64.png';
+  } else if (main.classList.contains('dark')) {
+    iconThemeImg.src = './//assets///img////icons8-moon-64.png';
+  }
+};
+audioBlock.addEventListener('click', clickAudio);
+iconTheme.addEventListener('click', clickTheme);
 easy.addEventListener('click', easyClick);
 normal.addEventListener('click', normalClick);
 hard.addEventListener('click', hardClick);
