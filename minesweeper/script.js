@@ -121,9 +121,9 @@ iconThemeImg.src = './//assets///img///icons8-sun-64.png';
 
 // audio
 const audioBlock = document.createElement('div');
-audioBlock.className = "audio-block"
+audioBlock.className = 'audio-block';
 const audioIcon = document.createElement('img');
-audioIcon.className = "audio-img"
+audioIcon.className = 'audio-img';
 audioBlock.append(audioIcon);
 main.prepend(audioBlock);
 audioIcon.src = './//assets///img///icons8-audio-100.png';
@@ -181,9 +181,6 @@ const winner = () => {
   }
   timeFinished.textContent = `${informationTime.textContent}`;
   winnerBlock.classList.add('block-winner--transition');
-};
-const loose = () => {
-
 };
 
 const deleteBtn = () => {
@@ -245,7 +242,7 @@ function rundomNumver(quantityValue, arrayValue, el) {
 }
 
 // добавленияе класса для рандомных значений в массиве
-let a;
+
 function addClassBomb(array, arrBtn) {
   const quantityBomb = inputNumberBombs.value;
   for (let i = 0; i < array.slice(0, quantityBomb).length; i += 1) {
@@ -300,12 +297,7 @@ function bombCount(el, quantity, x, y) {
 }
 
 // считает количество не открытых обычных ячеек, и когда они все открыты завершает игру
-const countNumber = (el) => {
-  const element = el;
-  // arrNumber.slice(arrNumber.indexOf(element.id), 1);
-  console.log(arrNumber.splice(arrNumber.indexOf(element.id) - 1, 1));
-  console.log(`${arrNumber.length}==== длина строки`);
-  console.log(arrNumber);
+const countNumber = () => {
   if (arrNumber.length === 0) {
     playingField.classList.remove('active-game');
     playingField.classList.add('game-over');
@@ -333,7 +325,6 @@ const addFlag = (element) => {
       if (!el.target.classList.contains('flag')) {
         countFlag -= 1;
         informationFlagCount.textContent = countFlag;
-        console.log('нажал на правую кнопку');
         // el.target.innerHtml = flagImg;
         el.target.classList.toggle('flag');
       } else {
@@ -433,7 +424,6 @@ const mousedown = (element) => {
 };
 const mouseup = (element) => {
   winner();
-  console.log(element.button);
   if (element.target.classList.contains('btn') && !element.target.classList.contains('flag') && validationInput() && !playingField.classList.contains('game-over')) {
     if (element.button === 0) {
       if (main.classList.contains('main--audio-active')) {
