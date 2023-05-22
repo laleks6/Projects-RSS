@@ -73,7 +73,6 @@ informationBlock.append(informationFlagCount);
 informationBlock.append(numberBombs);
 numberBombs.append(labelNumberBombs);
 numberBombs.append(inputNumberBombs);
-informationBlock.append(informationLogo);
 informationBlock.append(informationTime);
 informationBlock.append(informationClick);
 
