@@ -131,8 +131,8 @@ let countMinutes = 0;
 let interval; // что чтобы интервал работал нужно выносить параметр в глобальную видимость
 let countClick = 0;
 let arrNumber = [];
-let countLengthLocal = 0;
-const localStorageResult = {};
+const localStorageResultObj = {};
+let localStorageResultArray = [];
 
 // создание кнопок
 const creatBtn = (value) => {
@@ -173,23 +173,32 @@ const creatBtn = (value) => {
 creatBtn(quantityCells);
 
 const localStorageBord = () => {
-  if (countLengthLocal <= 10) {
-    countLengthLocal += 1;
-    const timeLocal = informationTime.textContent;
-    const countLocal = informationClick.textContent;
-    const flagLocal = informationFlagCount.textContent;
-    localStorageResult[`player-${countLengthLocal}`];
-    `player-${countLengthLocal}`.time = timeLocal;
-    localStorageResult[`player-${countLengthLocal}`].click = countLocal;
-    localStorageResult[`player-${countLengthLocal}`].flag = flagLocal;
-    localStorage.setItem('result', JSON.stringify(localStorageResult));
-    const resultLoclaStorege = localStorage.getItem('result');
-    console.log(resultLoclaStorege);
+  const resultLoclaStorege = localStorage.getItem('result');
+  if (JSON.parse(resultLoclaStorege) !== null) {
+    localStorageResultArray = JSON.parse(resultLoclaStorege);
   }
+  if (localStorageResultArray.length === 10) {
+    localStorageResultArray.shift();
+  }
+  console.log(localStorageResultArray.length);
+  const timeLocal = informationTime.textContent;
+  const countLocal = informationClick.textContent;
+  const flagLocal = informationFlagCount.textContent;
+  localStorageResultObj.time = timeLocal;
+  localStorageResultObj.click = countLocal;
+  localStorageResultObj.flag = flagLocal;
+  if (playingField.classList.contains('win')) {
+    localStorageResultObj.finish = 'loss';
+  } else if (playingField.classList.contains('loss')) {
+    localStorageResultObj.finish = 'win';
+  }
+  localStorageResultArray.push(localStorageResultObj);
+  localStorage.setItem('result', JSON.stringify(localStorageResultArray));
+  console.log(resultLoclaStorege);
 };
 
 const resultGame = () => {
-
+  localStorageBord();
   if (playingField.classList.contains('loss')) {
     // imgWinner.classList.toggle('block-winner-gif-hard');
     imgWinner.src = './//assets///img///finished-hard.gif';
@@ -211,7 +220,7 @@ const resultGame = () => {
   }
   timeFinished.textContent = `Game time — ${informationTime.textContent}`;
   countMove.textContent = `Completed moves — ${informationClick.textContent}`;
-  console.log(localStorageResult);
+  console.log(localStorageResultObj);
 };
 const removeResult = () => {
   imgWinner.classList.toggle('block-winner-gif-normal');
@@ -257,14 +266,10 @@ function time(el) {
     interval = setInterval(timeOut, 1000);
     informationTime.classList.toggle('active--timer');
   }
-  if (playingField.classList.contains('game-over')) {
-    timerOff(interval);
-    return;
-  }
   if (el.target.classList.contains('bomb')) {
     timerOff(interval);
   }
-  if (el.target.classList.contains('reboot-btn') || el.target.classList.contains('change-field-btn')) {
+  if (el.target.classList.contains('reboot-btn') || el.target.classList.contains('change-field-btn') || playingField.classList.contains('game-over')) {
     timerOff(interval);
     informationTime.textContent = '00:00';
     countSecond = 0;
