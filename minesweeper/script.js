@@ -130,10 +130,10 @@ let countSecond = 0;
 let countMinutes = 0;
 let interval; // что чтобы интервал работал нужно выносить параметр в глобальную видимость
 let countClick = 0;
+let arrNumber = [];
 
 // создание кнопок
 const creatBtn = (value) => {
-  playingFieldBlock.classList.remove('active-game');
   const quantityValue = +value;
   let x = 0;
   let y = 0;
@@ -170,17 +170,43 @@ const creatBtn = (value) => {
 };
 creatBtn(quantityCells);
 
-const winner = () => {
+const resultGame = () => {
+  if (playingField.classList.contains('loss')) {
+    imgWinner.classList.toggle('block-winner-gif-hard');
+    timeFinished.textContent = `${informationTime.textContent}`;
+    winnerBlock.classList.toggle('block-winner--transition');
+  }
+  if (playingField.classList.contains('win')) {
+    if (playingField.classList.contains('grid-btn-easy')) {
+      imgWinner.classList.toggle('block-winner-gif-hard');
+      timeFinished.textContent = `${informationTime.textContent}`;
+      winnerBlock.classList.toggle('block-winner--transition');
+    }
+    if (playingField.classList.contains('grid-btn-normal')) {
+      imgWinner.classList.toggle('block-winner-gif-normal');
+      timeFinished.textContent = `${informationTime.textContent}`;
+      winnerBlock.classList.toggle('block-winner--transition');
+    }
+    if (playingField.classList.contains('grid-btn-hard')) {
+      imgWinner.classList.toggle('block-winner-gif-hard');
+      timeFinished.textContent = `${informationTime.textContent}`;
+      winnerBlock.classList.toggle('block-winner--transition');
+    }
+  }
+};
+const removeResult = () => {
+  imgWinner.classList.toggle('block-winner-gif-normal');
   imgWinner.classList.toggle('block-winner-gif-hard');
-  timeFinished.textContent = `${informationTime.textContent}`;
   winnerBlock.classList.toggle('block-winner--transition');
 };
-const removeWinner = () => {
-  imgWinner.classList.toggle('block-winner-gif-hard');
-  timeFinished.textContent = `${informationTime.textContent}`;
-  winnerBlock.classList.toggle('block-winner--transition');
-};
+
 const deleteBtn = () => {
+  arrNumber = [];
+  playingFieldBlock.classList.remove('active-game');
+  playingField.classList.remove('win');
+  playingField.classList.remove('loss');
+  countClick = 0;
+  informationClick.textContent = '0';
   const btn = document.getElementsByClassName('btn');
   Array.from(btn).forEach((el) => {
     el.remove();
@@ -211,6 +237,10 @@ function time(el) {
   if (!informationTime.classList.contains('active--timer')) {
     interval = setInterval(timeOut, 1000);
     informationTime.classList.toggle('active--timer');
+  }
+  if (playingField.classList.contains('game-over')) {
+    timerOff(interval);
+    return;
   }
   if (el.target.classList.contains('bomb')) {
     timerOff(interval);
@@ -248,7 +278,6 @@ function addClassBomb(array, arrBtn) {
     btn.classList.remove('number');
   }
 }
-const arrNumber = [];
 const addNumberId = (arrBtn) => {
   Array.from(arrBtn).forEach((el) => {
     if (el.classList.contains('number') && !el.classList.contains('btn--unlock')) {
@@ -257,6 +286,24 @@ const addNumberId = (arrBtn) => {
   });
 };
 
+// считает количество не открытых обычных ячеек, и когда они все открыты завершает игру
+const deleteUnlockNumber = (element) => {
+  const elValue = element;
+  arrNumber.forEach((el) => {
+    if (elValue.id === el) { arrNumber.splice(arrNumber.indexOf(el), 1); }
+  });
+};
+const countNumber = (element) => {
+  deleteUnlockNumber(element);
+  console.log(arrNumber);
+  if (arrNumber.length === 0) {
+    playingField.classList.remove('active-game');
+    playingField.classList.add('game-over');
+    playingField.classList.add('win');
+    time(element);
+    resultGame();
+  }
+};
 // делаем проверка начала игры, если это новая игра то добавляем рандомные бомбы
 function startGame(arrBtn, array, el) {
   if (!playingField.classList.contains('active-game')) {
@@ -293,14 +340,6 @@ function bombCount(el, quantity, x, y) {
   return count;
 }
 
-// считает количество не открытых обычных ячеек, и когда они все открыты завершает игру
-const countNumber = () => {
-  if (arrNumber.length === 0) {
-    playingField.classList.remove('active-game');
-    playingField.classList.add('game-over');
-    winner();
-  }
-};
 // при клике на бомбу открывает все бомбы и завершает игру
 const clickBomb = (el) => {
   const element = el;
@@ -310,9 +349,10 @@ const clickBomb = (el) => {
     e.classList.add('btn-img-bomb');
     e.classList.add('btn--unlock');
   });
-  winner();
   playingField.classList.remove('active-game');
   playingField.classList.add('game-over');
+  playingField.classList.add('loss');
+  resultGame();
 };
 // добавляет флаг
 let countFlag = 0;
@@ -440,6 +480,7 @@ const clickReset = (element) => {
   time(element);
   deleteBtn();
   informationClick.textContent = '0';
+  playingField.classList.remove('win');
   playingField.classList.remove('game-over');
   playingFieldBlock.classList.remove('grid-btn-easy');
   creatBtn(quantityCells);
@@ -488,7 +529,7 @@ const clickTheme = () => {
     iconThemeImg.src = './//assets///img////icons8-moon-64.png';
   }
 };
-winnerBlock.addEventListener('click', removeWinner);
+winnerBlock.addEventListener('click', removeResult);
 audioBlock.addEventListener('click', clickAudio);
 iconTheme.addEventListener('click', clickTheme);
 easy.addEventListener('click', easyClick);
