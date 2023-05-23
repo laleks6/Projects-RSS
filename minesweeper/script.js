@@ -501,6 +501,9 @@ const mouseup = (element) => {
   }
 };
 const clickReset = (element) => {
+  if (main.classList.contains('main--audio-active')) {
+    clickLeftBtnAudio();
+  }
   time(element);
   deleteBtn();
   informationClick.textContent = '0';
@@ -510,18 +513,27 @@ const clickReset = (element) => {
   creatBtn(quantityCells);
 };
 const easyClick = (element) => {
+  if (main.classList.contains('main--audio-active')) {
+    clickLeftBtnAudio();
+  }
   time(element);
   quantityCells = 10;
   deleteBtn();
   creatBtn(quantityCells);
 };
 const normalClick = (element) => {
+  if (main.classList.contains('main--audio-active')) {
+    clickLeftBtnAudio();
+  }
   time(element);
   quantityCells = 15;
   deleteBtn();
   creatBtn(quantityCells);
 };
 const hardClick = (element) => {
+  if (main.classList.contains('main--audio-active')) {
+    clickLeftBtnAudio();
+  }
   time(element);
   quantityCells = 25;
   deleteBtn();
