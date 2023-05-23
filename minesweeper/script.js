@@ -131,6 +131,8 @@ let countMinutes = 0;
 let interval; // что чтобы интервал работал нужно выносить параметр в глобальную видимость
 let countClick = 0;
 let arrNumber = [];
+let countLengthLocal = 0;
+const localStorageResult = {};
 
 // создание кнопок
 const creatBtn = (value) => {
@@ -170,29 +172,46 @@ const creatBtn = (value) => {
 };
 creatBtn(quantityCells);
 
+const localStorageBord = () => {
+  if (countLengthLocal <= 10) {
+    countLengthLocal += 1;
+    const timeLocal = informationTime.textContent;
+    const countLocal = informationClick.textContent;
+    const flagLocal = informationFlagCount.textContent;
+    localStorageResult[`player-${countLengthLocal}`];
+    `player-${countLengthLocal}`.time = timeLocal;
+    localStorageResult[`player-${countLengthLocal}`].click = countLocal;
+    localStorageResult[`player-${countLengthLocal}`].flag = flagLocal;
+    localStorage.setItem('result', JSON.stringify(localStorageResult));
+    const resultLoclaStorege = localStorage.getItem('result');
+    console.log(resultLoclaStorege);
+  }
+};
+
 const resultGame = () => {
+
   if (playingField.classList.contains('loss')) {
-    imgWinner.classList.toggle('block-winner-gif-hard');
-    timeFinished.textContent = `${informationTime.textContent}`;
+    // imgWinner.classList.toggle('block-winner-gif-hard');
+    imgWinner.src = './//assets///img///finished-hard.gif';
     winnerBlock.classList.toggle('block-winner--transition');
   }
   if (playingField.classList.contains('win')) {
     if (playingField.classList.contains('grid-btn-easy')) {
       imgWinner.classList.toggle('block-winner-gif-hard');
-      timeFinished.textContent = `${informationTime.textContent}`;
       winnerBlock.classList.toggle('block-winner--transition');
     }
     if (playingField.classList.contains('grid-btn-normal')) {
-      imgWinner.classList.toggle('block-winner-gif-normal');
-      timeFinished.textContent = `${informationTime.textContent}`;
+      imgWinner.src = './//assets///img///smoke-BP.gif';
       winnerBlock.classList.toggle('block-winner--transition');
     }
     if (playingField.classList.contains('grid-btn-hard')) {
       imgWinner.classList.toggle('block-winner-gif-hard');
-      timeFinished.textContent = `${informationTime.textContent}`;
       winnerBlock.classList.toggle('block-winner--transition');
     }
   }
+  timeFinished.textContent = `Game time — ${informationTime.textContent}`;
+  countMove.textContent = `Completed moves — ${informationClick.textContent}`;
+  console.log(localStorageResult);
 };
 const removeResult = () => {
   imgWinner.classList.toggle('block-winner-gif-normal');
