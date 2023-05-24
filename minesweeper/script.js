@@ -93,19 +93,24 @@ const imgWinner = document.createElement('img');
 const result = document.createElement('div');
 const lastResult = document.createElement('div');
 const allResults = document.createElement('div');
+const allResultsTitle = document.createElement('span');
 const titleLastResult = document.createElement('span');
 const timeFinished = document.createElement('span');
 const countMove = document.createElement('span');
 const typeResult = document.createElement('span');
+const flagClik = document.createElement('span');
 winnerBlock.className = 'maine--block-winner';
 result.className = 'block-winner__result';
+imgWinner.className = 'block-winner-gif';
 lastResult.className = 'result__last-result';
 allResults.className = 'result__all-result';
+allResultsTitle.className = 'all-results-title';
 titleLastResult.className = 'block-winner--title';
 typeResult.className = 'block-winner--typeResult';
-imgWinner.className = 'block-winner-gif';
 timeFinished.className = 'block-winner__time-finished';
 countMove.className = 'block-winner__count-move';
+flagClik.className = 'block-winner__flag-clik';
+allResults.append(allResultsTitle);
 main.prepend(winnerBlock);
 winnerBlock.prepend(result);
 winnerBlock.prepend(imgWinner);
@@ -113,8 +118,10 @@ result.prepend(allResults);
 result.prepend(lastResult);
 lastResult.prepend(typeResult);
 lastResult.prepend(timeFinished);
+lastResult.prepend(flagClik);
 lastResult.prepend(countMove);
 lastResult.prepend(titleLastResult);
+allResultsTitle.textContent = 'Last results';
 
 // light and dark theme
 const iconTheme = document.createElement('div');
@@ -183,7 +190,49 @@ const creatBtn = (value) => {
   }
 };
 creatBtn(quantityCells);
+const outputLocalStorage = (obj) => {
+  const playersObg = obj;
+  let countPlayr = 0;
+  if (obj.length > 0) {
+    playersObg.forEach((player) => {
+      countPlayr += 1;
+      const blockOneResult = document.createElement('div');
+      const titleLastResultAll = document.createElement('span');
+      const timeFinishedAll = document.createElement('span');
+      const countMoveAll = document.createElement('span');
+      const typeResultAll = document.createElement('span');
+      const flagClikAll = document.createElement('span');
+      blockOneResult.className = 'block-one-Result';
+      timeFinishedAll.className = 'block-winner--title';
+      typeResultAll.className = 'block-winner--typeResult';
+      timeFinishedAll.className = 'block-winner__time-finished';
+      countMoveAll.className = 'block-winner__count-move';
+      flagClikAll.className = 'block-winner__flag-clik';
+      allResults.append(blockOneResult);
+      blockOneResult.prepend(typeResultAll);
+      blockOneResult.prepend(timeFinishedAll);
+      blockOneResult.prepend(flagClikAll);
+      blockOneResult.prepend(countMoveAll);
+      blockOneResult.prepend(titleLastResultAll);
+      titleLastResultAll.textContent = `${countPlayr}.`;
+      timeFinishedAll.textContent = `Time  —   ${player.time}`;
+      countMoveAll.textContent = `Click  —   ${player.click}`;
+      flagClikAll.textContent = `Flags  —   ${player.flag}`;
 
+      console.log(player.finish);
+      if (player.finish === 'loss') {
+        typeResultAll.textContent = 'loss';
+        typeResult.style.color = 'red';
+      }
+      if (player.finish === 'win') {
+        console.log(typeof player.finish);
+        typeResultAll.textContent = 'win';
+        typeResultAll.style.color = 'yellow';
+      }
+      console.log(player);
+    });
+  }
+};
 const localStorageBord = () => {
   const resultLoclaStorege = localStorage.getItem('result');
   if (JSON.parse(resultLoclaStorege) !== null) {
@@ -193,18 +242,19 @@ const localStorageBord = () => {
     localStorageResultArray.splice(0, 1);
     console.log('daaaa');
   }
-  console.log(localStorageResultArray.length);
-  console.log( `${typeof resultLoclaStorege} - type`);
+  outputLocalStorage(localStorageResultArray);
   const timeLocal = informationTime.textContent;
   const countLocal = informationClick.textContent;
   const flagLocal = informationFlagCount.textContent;
+  const clickLocal = informationClick.textContent;
   localStorageResultObj.time = timeLocal;
   localStorageResultObj.click = countLocal;
   localStorageResultObj.flag = flagLocal;
+  localStorageResultObj.click = clickLocal;
   if (playingField.classList.contains('win')) {
-    localStorageResultObj.finish = 'loss';
-  } else if (playingField.classList.contains('loss')) {
     localStorageResultObj.finish = 'win';
+  } else if (playingField.classList.contains('loss')) {
+    localStorageResultObj.finish = 'loss';
   }
   localStorageResultArray.push(localStorageResultObj);
   localStorage.setItem('result', JSON.stringify(localStorageResultArray));
@@ -262,8 +312,9 @@ const resultGame = () => {
     }
   }
   titleLastResult.textContent = 'Your result: ';
-  timeFinished.textContent = `Game time  —   ${informationTime.textContent}`;
-  countMove.textContent = `Completed moves  —   ${informationClick.textContent}`;
+  timeFinished.textContent = `Time  —   ${informationTime.textContent}`;
+  countMove.textContent = `Click  —   ${informationClick.textContent}`;
+  flagClik.textContent = `Flags  —   ${informationClick.textContent}`;
   console.log(localStorageResultObj);
 };
 const removeResult = () => {

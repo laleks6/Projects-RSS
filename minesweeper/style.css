@@ -73,7 +73,7 @@ html {
     max-width: 100%;
     height: auto;
     z-index: 2;
-    background-color: #8b8b8b;
+    background-color: #ffffff;
 }
 .block-winner--transition {
     transition: all 1s ease-in-out;
@@ -105,26 +105,41 @@ html {
     position: relative;
     display: flex;
     flex-direction: column;
-    color: white;
+    color: #000;
     padding: 5px;
     font-family: 'Verdana', sans-serif;
     font-size: 1.1rem;
+    gap: 20px;
     
 }
 .result__last-result {
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
     justify-content: space-between;
-    border: 2px solid yellow;
+    border: 3px solid rgb(255, 153, 0);
+    padding: 5px;
 }
-.block-winner--title {
+.result__all-result {
+    display: flex;
+    flex-direction: column;
+    border: 3px solid rgb(113, 67, 167);
+    padding: 5px;
+}
+.all-results-title{
+    text-align: center;
+}
+.block-one-Result {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-width: 70%;
+}
+.block-winner--title,
+.all-results-title {
     font-weight: bold;
     font-size: 1.2rem;
 }
-.timeFinished {
 
-}
 
 .minesweeper-block {
     position: relative;
