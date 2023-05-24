@@ -193,13 +193,10 @@ creatBtn(quantityCells);
 
 const outputLocalStorage = (obj) => {
   const playersObg = obj;
-  console.log(playersObg);
   let countPlayr = 0;
   if (obj.length > 0) {
     playersObg.forEach((player) => {
       countPlayr += 1;
-      console.log(player);
-      console.log(countPlayr);
       const blockOneResult = document.createElement('div');
       const titleLastResultAll = document.createElement('span');
       const timeFinishedAll = document.createElement('span');
@@ -246,7 +243,6 @@ const localStorageBord = () => {
     localStorageResultArray = [];
   } else if (localStorageResultArray.length === 11) {
     localStorageResultArray.splice(0, 1);
-    console.log('daaaa');
   }
   outputLocalStorage(localStorageResultArray);
   const timeLocal = informationTime.textContent;
@@ -264,8 +260,6 @@ const localStorageBord = () => {
   }
   localStorageResultArray.push(localStorageResultObj);
   localStorage.setItem('result', JSON.stringify(localStorageResultArray));
-  console.log(localStorageResultArray);
-  console.log(resultLoclaStorege);
 };
 
 const audioLoss = new Audio('.///assets///sound///cartoon_cannon.mp3');
@@ -330,7 +324,6 @@ const resultGame = () => {
   timeFinished.textContent = `Time  —   ${informationTime.textContent}`;
   countMove.textContent = `Click  —   ${informationClick.textContent}`;
   flagClik.textContent = `Flags  —   ${informationFlagCount.textContent}`;
-  console.log(localStorageResultObj);
 };
 const removeResult = () => {
   if (main.classList.contains('main--audio-active')) {
