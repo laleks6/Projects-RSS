@@ -206,7 +206,7 @@ const resultGame = () => {
   }
   if (playingField.classList.contains('win')) {
     if (playingField.classList.contains('grid-btn-easy')) {
-      imgWinner.classList.toggle('block-winner-gif-hard');
+      imgWinner.src = './//assets///img///finished-hard.gif';
       winnerBlock.classList.toggle('block-winner--transition');
     }
     if (playingField.classList.contains('grid-btn-normal')) {
