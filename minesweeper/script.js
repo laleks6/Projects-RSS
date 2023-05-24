@@ -92,6 +92,7 @@ const winnerBlock = document.createElement('div');
 const imgWinner = document.createElement('img');
 const result = document.createElement('div');
 const lastResult = document.createElement('div');
+const allResults = document.createElement('div');
 const titleLastResult = document.createElement('span');
 const timeFinished = document.createElement('span');
 const countMove = document.createElement('span');
@@ -99,6 +100,7 @@ const typeResult = document.createElement('span');
 winnerBlock.className = 'maine--block-winner';
 result.className = 'block-winner__result';
 lastResult.className = 'result__last-result';
+allResults.className = 'result__all-result';
 titleLastResult.className = 'block-winner--title';
 typeResult.className = 'block-winner--typeResult';
 imgWinner.className = 'block-winner-gif';
@@ -106,8 +108,9 @@ timeFinished.className = 'block-winner__time-finished';
 countMove.className = 'block-winner__count-move';
 main.prepend(winnerBlock);
 winnerBlock.prepend(result);
-result.prepend(lastResult);
 winnerBlock.prepend(imgWinner);
+result.prepend(allResults);
+result.prepend(lastResult);
 lastResult.prepend(typeResult);
 lastResult.prepend(timeFinished);
 lastResult.prepend(countMove);
@@ -206,7 +209,33 @@ const localStorageBord = () => {
   console.log(resultLoclaStorege);
 };
 
+const audioLoss = new Audio('.///assets///sound///cartoon_cannon.mp3');
+const audioWin = new Audio('.///assets///sound///Cowboy_Bebop_OST_3_Blue_-_N.Y._Rush.mp3');
+// const allResults
+const resultAudioWin = () => {
+  if (winnerBlock.classList.contains('activ-music')) {
+    audioWin.pause();
+    winnerBlock.classList.toggle('activ-music');
+  } else { audioWin.play(); }
+};
+const resultAudioLoss = () => {
+  if (playingField.classList.contains('loss')) {
+    audioLoss.play();
+  }
+};
+const resultAudio = () => {
+  if (playingField.classList.contains('win')) {
+    resultAudioWin();
+  }
+  if (playingField.classList.contains('loss')) {
+    resultAudioLoss();
+  }
+};
 const resultGame = () => {
+  if (main.classList.contains('main--audio-active')) {
+    resultAudio();
+    winnerBlock.classList.toggle('activ-music');
+  }
   localStorageBord();
   if (playingField.classList.contains('loss')) {
     // imgWinner.classList.toggle('block-winner-gif-hard');
@@ -238,6 +267,7 @@ const resultGame = () => {
   console.log(localStorageResultObj);
 };
 const removeResult = () => {
+  resultAudio();
   imgWinner.classList.toggle('block-winner-gif-normal');
   imgWinner.classList.toggle('block-winner-gif-hard');
   winnerBlock.classList.toggle('block-winner--transition');
