@@ -242,7 +242,9 @@ const deleteLocalTop = () => {
 const localStorageBord = () => {
   const resultLoclaStorege = localStorage.getItem('result');
   localStorageResultArray = JSON.parse(resultLoclaStorege);
-  if (localStorageResultArray.length === 11) {
+  if (localStorageResultArray === null) {
+    localStorageResultArray = [];
+  } else if (localStorageResultArray.length === 11) {
     localStorageResultArray.splice(0, 1);
     console.log('daaaa');
   }
