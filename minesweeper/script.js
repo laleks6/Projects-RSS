@@ -190,12 +190,16 @@ const creatBtn = (value) => {
   }
 };
 creatBtn(quantityCells);
+
 const outputLocalStorage = (obj) => {
   const playersObg = obj;
+  console.log(playersObg);
   let countPlayr = 0;
   if (obj.length > 0) {
     playersObg.forEach((player) => {
       countPlayr += 1;
+      console.log(player);
+      console.log(countPlayr);
       const blockOneResult = document.createElement('div');
       const titleLastResultAll = document.createElement('span');
       const timeFinishedAll = document.createElement('span');
@@ -218,27 +222,27 @@ const outputLocalStorage = (obj) => {
       timeFinishedAll.textContent = `Time  —   ${player.time}`;
       countMoveAll.textContent = `Click  —   ${player.click}`;
       flagClikAll.textContent = `Flags  —   ${player.flag}`;
-
-      console.log(player.finish);
       if (player.finish === 'loss') {
         typeResultAll.textContent = 'loss';
-        typeResult.style.color = 'red';
+        typeResultAll.style.color = 'red';
       }
       if (player.finish === 'win') {
-        console.log(typeof player.finish);
         typeResultAll.textContent = 'win';
         typeResultAll.style.color = 'yellow';
       }
-      console.log(player);
     });
   }
 };
+const deleteLocalTop = () => {
+  const deleteBllock = document.getElementsByClassName('block-one-Result');
+  Array.from(deleteBllock).forEach((el) => {
+    el.remove();
+  });
+};
 const localStorageBord = () => {
   const resultLoclaStorege = localStorage.getItem('result');
-  if (JSON.parse(resultLoclaStorege) !== null) {
-    localStorageResultArray = JSON.parse(resultLoclaStorege);
-  }
-  if (localStorageResultArray.length > 10) {
+  localStorageResultArray = JSON.parse(resultLoclaStorege);
+  if (localStorageResultArray.length === 11) {
     localStorageResultArray.splice(0, 1);
     console.log('daaaa');
   }
@@ -258,12 +262,21 @@ const localStorageBord = () => {
   }
   localStorageResultArray.push(localStorageResultObj);
   localStorage.setItem('result', JSON.stringify(localStorageResultArray));
+  console.log(localStorageResultArray);
   console.log(resultLoclaStorege);
 };
 
 const audioLoss = new Audio('.///assets///sound///cartoon_cannon.mp3');
 const audioWin = new Audio('.///assets///sound///Cowboy_Bebop_OST_3_Blue_-_N.Y._Rush.mp3');
 // const allResults
+const clickLeftBtnAudio = () => {
+  const audio = new Audio('.///assets///sound///MI_SFX 25.mp3');
+  audio.play();
+};
+const clickRightBtnAudio = () => {
+  const audio = new Audio('.///assets///sound///MI_SFX 05.mp3');
+  audio.play();
+};
 const resultAudioWin = () => {
   if (winnerBlock.classList.contains('activ-music')) {
     audioWin.pause();
@@ -284,7 +297,7 @@ const resultAudio = () => {
 const resultGame = () => {
   if (main.classList.contains('main--audio-active')) {
     resultAudio();
-    winnerBlock.classList.toggle('activ-music');
+    winnerBlock.classList.add('activ-music');
   }
   localStorageBord();
   if (playingField.classList.contains('loss')) {
@@ -314,17 +327,18 @@ const resultGame = () => {
   titleLastResult.textContent = 'Your result: ';
   timeFinished.textContent = `Time  —   ${informationTime.textContent}`;
   countMove.textContent = `Click  —   ${informationClick.textContent}`;
-  flagClik.textContent = `Flags  —   ${informationClick.textContent}`;
+  flagClik.textContent = `Flags  —   ${informationFlagCount.textContent}`;
   console.log(localStorageResultObj);
 };
 const removeResult = () => {
   if (main.classList.contains('main--audio-active')) {
-    resultAudio();
-    winnerBlock.classList.toggle('activ-music');
+    clickLeftBtnAudio();
+    winnerBlock.classList.remove('activ-music');
   }
   imgWinner.classList.toggle('block-winner-gif-normal');
   imgWinner.classList.toggle('block-winner-gif-hard');
   winnerBlock.classList.toggle('block-winner--transition');
+  deleteLocalTop();
 };
 
 const deleteBtn = () => {
@@ -567,15 +581,6 @@ const validationInput = () => {
   return valid;
 };
 
-const clickLeftBtnAudio = () => {
-  const audio = new Audio('.///assets///sound///MI_SFX 25.mp3');
-  audio.play();
-};
-const clickRightBtnAudio = () => {
-  const audio = new Audio('.///assets///sound///MI_SFX 05.mp3');
-  audio.play();
-};
-
 const mousedown = (element) => {
   if (element.button === 2) {
     if (main.classList.contains('main--audio-active')) {
@@ -641,10 +646,18 @@ const hardClick = (element) => {
   creatBtn(quantityCells);
 };
 const clickAudio = () => {
-  main.classList.toggle('main--audio-active');
+  if (main.classList.contains('main--audio-active')) {
+    clickLeftBtnAudio();
+    main.classList.toggle('main--audio-active');
+  } else {
+    main.classList.toggle('main--audio-active');
+  }
 };
 
 const clickTheme = () => {
+  if (main.classList.contains('main--audio-active')) {
+    clickLeftBtnAudio();
+  }
   const btn = document.getElementsByClassName('btn');
   const btnDifficulty = document.getElementsByClassName('change-field-btn');
   main.classList.toggle('sweet');
