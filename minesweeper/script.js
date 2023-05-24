@@ -189,10 +189,12 @@ const localStorageBord = () => {
   if (JSON.parse(resultLoclaStorege) !== null) {
     localStorageResultArray = JSON.parse(resultLoclaStorege);
   }
-  if (localStorageResultArray.length === 10) {
-    localStorageResultArray.shift();
+  if (localStorageResultArray.length > 10) {
+    localStorageResultArray.splice(0, 1);
+    console.log('daaaa');
   }
   console.log(localStorageResultArray.length);
+  console.log( `${typeof resultLoclaStorege} - type`);
   const timeLocal = informationTime.textContent;
   const countLocal = informationClick.textContent;
   const flagLocal = informationFlagCount.textContent;
@@ -215,13 +217,10 @@ const audioWin = new Audio('.///assets///sound///Cowboy_Bebop_OST_3_Blue_-_N.Y._
 const resultAudioWin = () => {
   if (winnerBlock.classList.contains('activ-music')) {
     audioWin.pause();
-    winnerBlock.classList.toggle('activ-music');
   } else { audioWin.play(); }
 };
 const resultAudioLoss = () => {
-  if (playingField.classList.contains('loss')) {
-    audioLoss.play();
-  }
+  audioLoss.play();
 };
 const resultAudio = () => {
   if (playingField.classList.contains('win')) {
@@ -231,6 +230,7 @@ const resultAudio = () => {
     resultAudioLoss();
   }
 };
+
 const resultGame = () => {
   if (main.classList.contains('main--audio-active')) {
     resultAudio();
@@ -267,7 +267,10 @@ const resultGame = () => {
   console.log(localStorageResultObj);
 };
 const removeResult = () => {
-  resultAudio();
+  if (main.classList.contains('main--audio-active')) {
+    resultAudio();
+    winnerBlock.classList.toggle('activ-music');
+  }
   imgWinner.classList.toggle('block-winner-gif-normal');
   imgWinner.classList.toggle('block-winner-gif-hard');
   winnerBlock.classList.toggle('block-winner--transition');
