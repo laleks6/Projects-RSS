@@ -91,18 +91,27 @@ body.prepend(header);
 const winnerBlock = document.createElement('div');
 const imgWinner = document.createElement('img');
 const result = document.createElement('div');
-const timeFinished = document.createElement('div');
-const countMove = document.createElement('div');
+const lastResult = document.createElement('div');
+const titleLastResult = document.createElement('span');
+const timeFinished = document.createElement('span');
+const countMove = document.createElement('span');
+const typeResult = document.createElement('span');
 winnerBlock.className = 'maine--block-winner';
 result.className = 'block-winner__result';
+lastResult.className = 'result__last-result';
+titleLastResult.className = 'block-winner--title';
+typeResult.className = 'block-winner--typeResult';
 imgWinner.className = 'block-winner-gif';
 timeFinished.className = 'block-winner__time-finished';
 countMove.className = 'block-winner__count-move';
 main.prepend(winnerBlock);
 winnerBlock.prepend(result);
+result.prepend(lastResult);
 winnerBlock.prepend(imgWinner);
-result.prepend(timeFinished);
-result.prepend(countMove);
+lastResult.prepend(typeResult);
+lastResult.prepend(timeFinished);
+lastResult.prepend(countMove);
+lastResult.prepend(titleLastResult);
 
 // light and dark theme
 const iconTheme = document.createElement('div');
@@ -203,23 +212,29 @@ const resultGame = () => {
     // imgWinner.classList.toggle('block-winner-gif-hard');
     imgWinner.src = './//assets///img///finished-hard.gif';
     winnerBlock.classList.toggle('block-winner--transition');
+    typeResult.textContent = 'loss';
+    typeResult.style.color = 'red';
   }
   if (playingField.classList.contains('win')) {
+    typeResult.textContent = 'win';
+    typeResult.style.color = 'yellow';
     if (playingField.classList.contains('grid-btn-easy')) {
-      imgWinner.classList.toggle('block-winner-gif-hard');
+      imgWinner.src = './//assets///img///ramen-BP.gif';
       winnerBlock.classList.toggle('block-winner--transition');
     }
     if (playingField.classList.contains('grid-btn-normal')) {
-      imgWinner.src = './//assets///img///smoke-BP.gif';
+      imgWinner.src = './//assets///img///sumbrero-BB.gif';
       winnerBlock.classList.toggle('block-winner--transition');
     }
     if (playingField.classList.contains('grid-btn-hard')) {
       imgWinner.classList.toggle('block-winner-gif-hard');
       winnerBlock.classList.toggle('block-winner--transition');
+      imgWinner.src = './//assets///img///smoke-BP.gif';
     }
   }
-  timeFinished.textContent = `Game time — ${informationTime.textContent}`;
-  countMove.textContent = `Completed moves — ${informationClick.textContent}`;
+  titleLastResult.textContent = 'Your result: ';
+  timeFinished.textContent = `Game time  —   ${informationTime.textContent}`;
+  countMove.textContent = `Completed moves  —   ${informationClick.textContent}`;
   console.log(localStorageResultObj);
 };
 const removeResult = () => {
@@ -266,10 +281,10 @@ function time(el) {
     interval = setInterval(timeOut, 1000);
     informationTime.classList.toggle('active--timer');
   }
-  if (el.target.classList.contains('bomb')) {
+  if (el.classList.contains('bomb')) {
     timerOff(interval);
   }
-  if (el.target.classList.contains('reboot-btn') || el.target.classList.contains('change-field-btn') || playingField.classList.contains('game-over')) {
+  if (el.classList.contains('reboot-btn') || el.classList.contains('change-field-btn') || playingField.classList.contains('game-over')) {
     timerOff(interval);
     informationTime.textContent = '00:00';
     countSecond = 0;
@@ -319,7 +334,6 @@ const deleteUnlockNumber = (element) => {
 };
 const countNumber = (element) => {
   deleteUnlockNumber(element);
-  console.log(arrNumber);
   if (arrNumber.length === 0) {
     playingField.classList.remove('active-game');
     playingField.classList.add('game-over');
@@ -460,6 +474,9 @@ const validationInput = () => {
     } else {
     // изменение количества флагов в зависимости от бомб
       informationFlagCount.textContent = inputNumberBombs.value;
+      if (inputNumberBombs.value === '' || +inputNumberBombs.value < 10) {
+        informationFlagCount.textContent = 0;
+      }
       valid = true;
     }
   }
@@ -493,7 +510,7 @@ const mouseup = (element) => {
       }
       countClick += 1;
       informationClick.textContent = countClick;
-      time(element);
+      time(element.target);
       const { x } = element.target.dataset;
       const { y } = element.target.dataset;
       buttonAssembly(quantityCells, element.target, x, y);
@@ -504,7 +521,7 @@ const clickReset = (element) => {
   if (main.classList.contains('main--audio-active')) {
     clickLeftBtnAudio();
   }
-  time(element);
+  time(element.target);
   deleteBtn();
   informationClick.textContent = '0';
   playingField.classList.remove('win');
@@ -516,7 +533,7 @@ const easyClick = (element) => {
   if (main.classList.contains('main--audio-active')) {
     clickLeftBtnAudio();
   }
-  time(element);
+  time(element.target);
   quantityCells = 10;
   deleteBtn();
   creatBtn(quantityCells);
@@ -525,7 +542,7 @@ const normalClick = (element) => {
   if (main.classList.contains('main--audio-active')) {
     clickLeftBtnAudio();
   }
-  time(element);
+  time(element.target);
   quantityCells = 15;
   deleteBtn();
   creatBtn(quantityCells);
@@ -534,7 +551,7 @@ const hardClick = (element) => {
   if (main.classList.contains('main--audio-active')) {
     clickLeftBtnAudio();
   }
-  time(element);
+  time(element.target);
   quantityCells = 25;
   deleteBtn();
   creatBtn(quantityCells);
