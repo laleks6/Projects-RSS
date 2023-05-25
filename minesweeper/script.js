@@ -327,6 +327,7 @@ const resultGame = () => {
 };
 const removeResult = () => {
   if (main.classList.contains('main--audio-active')) {
+    resultAudio();
     clickLeftBtnAudio();
     winnerBlock.classList.remove('activ-music');
   }
