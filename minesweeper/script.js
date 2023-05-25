@@ -225,7 +225,7 @@ const outputLocalStorage = (obj) => {
       }
       if (player.finish === 'win') {
         typeResultAll.textContent = 'win';
-        typeResultAll.style.color = 'yellow';
+        typeResultAll.style.color = 'green';
       }
     });
   }
@@ -305,7 +305,7 @@ const resultGame = () => {
   }
   if (playingField.classList.contains('win')) {
     typeResult.textContent = 'win';
-    typeResult.style.color = 'yellow';
+    typeResult.style.color = 'green';
     if (playingField.classList.contains('grid-btn-easy')) {
       imgWinner.src = './//assets///img///ramen-BP.gif';
       winnerBlock.classList.toggle('block-winner--transition');
