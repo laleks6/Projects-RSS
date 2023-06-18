@@ -23,3 +23,6 @@ export interface Isources {
         name: string;
     };
 }
+export interface IOption {
+    [key: string]: string;
+}
