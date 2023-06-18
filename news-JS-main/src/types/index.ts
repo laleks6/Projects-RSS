@@ -4,7 +4,10 @@ export interface INewsAllProps {
     articles?: Array<INewsProps>;
 }
 export interface INewsProps {
-    sources?: Isources[];
+    source: {
+        id: string;
+        name: string;
+    };
     author: string;
     title: string;
     description: string;
@@ -14,8 +17,8 @@ export interface INewsProps {
     content: string;
 }
 export interface Isources {
-    sources: {
-        id?: string;
-        name?: string;
+    source: {
+        id: string;
+        name: string;
     };
 }
