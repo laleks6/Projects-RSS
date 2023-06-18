@@ -4,6 +4,7 @@ export interface INewsAllProps {
     articles?: Array<INewsProps>;
 }
 export interface INewsProps {
+    sources: Array<Isources>;
     source: {
         id: string;
         name: string;
