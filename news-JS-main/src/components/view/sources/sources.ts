@@ -1,7 +1,7 @@
 import './sources.css';
-import { Isources } from 'src/types/index';
+import { INewsProps } from 'src/types/index';
 class Sources {
-    draw(data: Isources[]) {
+    draw(data: INewsProps[]): void {
         const fragment: DocumentFragment = document.createDocumentFragment() as DocumentFragment;
         const sourceItemTemp: Element = document.querySelector('#sourceItemTemp') as HTMLTemplateElement;
 
@@ -18,8 +18,8 @@ class Sources {
                 // sourceClone!.querySelector('.source__item-name')!.textContent = item.source.name;
                 // sourceClone!.querySelector('.source__item')!.setAttribute('data-source-id', item.source.id);
 
-                fragment.append(sourceItemName);
-                fragment.append(sourceItem);
+                fragment.prepend(sourceItemName);
+                fragment.prepend(sourceItem);
             }
         });
 

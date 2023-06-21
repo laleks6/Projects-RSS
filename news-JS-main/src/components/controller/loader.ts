@@ -2,17 +2,17 @@ import { IOption } from 'src/types/index';
 class Loader {
     public baseLink: string;
     public options: IOption;
-    constructor(options: IOption, baseLink: string) {
+    constructor(baseLink: string, options: IOption) {
         this.baseLink = baseLink;
         this.options = options;
     }
 
-    getResp(
-        { endpoint, options = {} }: { endpoint: string; options: IOption },
-        callback = () => {
+    getResp<T>(
+        { endpoint, options }: { endpoint: string; options?: IOption },
+        callback: (data: T) => void = () => {
             console.error('No callback for GET response');
         }
-    ): void {
+    ) {
         this.load('GET', endpoint, callback, options);
     }
 
@@ -37,7 +37,7 @@ class Loader {
         return url.slice(0, -1);
     }
 
-    load(method: string, endpoint: string, callback: (data: string) => void, options = {}) {
+    load<T>(method: string, endpoint: string, callback: (data: T) => void, options = {}) {
         fetch(this.makeUrl(options, endpoint), { method })
             .then(this.errorHandler)
             .then((res) => res.json())

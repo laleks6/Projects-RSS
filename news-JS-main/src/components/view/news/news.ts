@@ -56,13 +56,13 @@ class News {
                 // newsClone.querySelector('.news__description-content')!.textContent = item.description;
                 // newsClone.querySelector('.news__read-more a')!.setAttribute('href', item.url);
 
-                fragment.append(photo);
-                fragment.append(autorText);
-                fragment.append(date);
-                fragment.append(descriptionTitle);
-                fragment.append(descriptionSource);
-                fragment.append(descriptionContent);
-                fragment.append(readMore);
+                fragment.prepend(photo);
+                fragment.prepend(autorText);
+                fragment.prepend(date);
+                fragment.prepend(descriptionTitle);
+                fragment.prepend(descriptionSource);
+                fragment.prepend(descriptionContent);
+                fragment.prepend(readMore);
             }
         });
         const documentInnerNews: HTMLElement = document.querySelector('.news') as HTMLElement;
