@@ -1,7 +1,7 @@
 export interface INewsAllProps {
     status: string;
     totalResult: number;
-    articles?: INewsProps[] | undefined;
+    articles?: INewsProps[];
 }
 export interface INewsProps {
     sources?: INewsProps[];
