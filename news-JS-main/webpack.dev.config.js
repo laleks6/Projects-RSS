@@ -1,11 +1,10 @@
-const path = require('path');
+const { resolve } = require('path');
 
 module.exports = {
     mode: 'development',
     devtool: 'inline-source-map',
     devServer: {
-        static: {
-            directory: path.join(__dirname, '../dist'),
-        },
+        static: resolve(__dirname, './dist'),
+        port: 8080,
     },
 };

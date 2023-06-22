@@ -2,12 +2,7 @@ import AppLoader from './appLoader';
 
 class AppController extends AppLoader {
     getSources<T>(callback: (data: T) => void) {
-        super.getResp(
-            {
-                endpoint: 'sources',
-            },
-            callback
-        );
+        super.getResp({ endpoint: 'sources' }, callback);
     }
 
     public getNews<T>(e: Event, callback: (data: T) => void) {

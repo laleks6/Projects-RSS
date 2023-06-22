@@ -29,3 +29,8 @@ export interface Isources {
 export interface IOption {
     [key: string]: string;
 }
+export type Response = {
+    ok: boolean;
+    status: number;
+    statusText: string;
+};
