@@ -1,10 +1,10 @@
 export interface INewsAllProps {
     status: string;
     totalResult: number;
-    articles?: INewsProps[];
+    articles?: Array<INewsProps>;
+    sources?: INewsProps[];
 }
 export interface INewsProps {
-    sources?: INewsProps[];
     source: {
         id: string;
         name: string;
@@ -20,11 +20,13 @@ export interface INewsProps {
 export interface Isources {
     id: string;
     name: string;
+    author: string;
+    title: string;
     description: string;
     url: string;
-    category: string;
-    language: string;
-    country: string;
+    urlToImage: string;
+    publishedAt: string;
+    content: string;
 }
 export interface IOption {
     [key: string]: string;

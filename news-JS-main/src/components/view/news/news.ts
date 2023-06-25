@@ -1,11 +1,11 @@
 import './news.css';
 import { INewsProps } from 'src/types/index';
-
 class News {
     draw(data: INewsProps[]): void {
+        console.log('aaaaaaaaaa');
         const news = data.length >= 10 ? data.filter((_item, idx: number) => idx < 10) : data;
 
-        const fragment = document.createDocumentFragment();
+        const fragmentNews = document.createDocumentFragment();
         const newsItemTemp: HTMLTemplateElement = document.querySelector('#newsItemTemp') as HTMLTemplateElement;
 
         news.forEach((item: INewsProps, idx: number): void => {
@@ -55,20 +55,24 @@ class News {
                 // newsClone.querySelector('.news__description-source')!.textContent = item.source.name;
                 // newsClone.querySelector('.news__description-content')!.textContent = item.description;
                 // newsClone.querySelector('.news__read-more a')!.setAttribute('href', item.url);
-
-                fragment.prepend(photo);
-                fragment.prepend(autorText);
-                fragment.prepend(date);
-                fragment.prepend(descriptionTitle);
-                fragment.prepend(descriptionSource);
-                fragment.prepend(descriptionContent);
-                fragment.prepend(readMore);
+                fragmentNews.prepend(newsClone);
+                fragmentNews.prepend(photo);
+                fragmentNews.prepend(autorText);
+                fragmentNews.prepend(date);
+                fragmentNews.prepend(descriptionTitle);
+                fragmentNews.prepend(descriptionSource);
+                fragmentNews.prepend(descriptionContent);
+                fragmentNews.prepend(readMore);
             }
         });
-        const documentInnerNews: HTMLElement = document.querySelector('.news') as HTMLElement;
         const appendBlockNews: HTMLElement = document.querySelector('.news') as HTMLElement;
-        if (documentInnerNews instanceof HTMLElement) documentInnerNews.innerHTML = '';
-        if (appendBlockNews instanceof HTMLElement) appendBlockNews.appendChild(fragment);
+
+        if (appendBlockNews instanceof HTMLElement) {
+            console.log('yes');
+            appendBlockNews.innerHTML = '';
+            appendBlockNews.appendChild(fragmentNews);
+        }
+
         // document.querySelector('.news')!.innerHTML = '';
         // document.querySelector('.news')!.appendChild(fragment);
     }

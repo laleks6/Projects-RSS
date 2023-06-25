@@ -1,6 +1,6 @@
 import News from './news/news';
 import Sources from './sources/sources';
-import { INewsAllProps, INewsProps } from 'src/types/index';
+import { INewsAllProps } from 'src/types/index';
 export class AppView {
     news: News;
     sources: Sources;
@@ -14,7 +14,7 @@ export class AppView {
         this.news.draw(values);
     }
 
-    drawSources(data: INewsProps): void {
+    drawSources(data: INewsAllProps): void {
         const values = data?.sources ? data?.sources : [];
         this.sources.draw(values);
     }
