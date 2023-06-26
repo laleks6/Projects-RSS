@@ -36,7 +36,7 @@ module.exports = ({development}) => ({
         },
         {
             test: /\.(?:ico|gif|png|jpg|jpeg|svg)$/i,
-            type: 'asset/resource',
+            type: 'asset/inline',
           },
           {
             test: /\.(woff(2)?|eot|ttf|otf)$/i,

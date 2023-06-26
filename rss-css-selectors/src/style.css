@@ -1,4 +1,61 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+html {
+    font-size: 12px;
+    width: 100vw;
+    height: 100vh;
+}
 body {
     background-color: brown;
-    background-image: url('./assets/d.png');
+    position: relative;
+}
+.wrap {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+}
+
+.selectors-block {
+    position: fixed;
+    width: calc(100% - 400px);
+    top: 0;
+    bottom: 0;
+    left: 0;
+    background-color: white;
+}
+.selections {
+    display: flex;
+}
+.playing-field {
+
+}
+.playing-field__header {
+    width: 100%;
+    padding: 15px 0px 40px 0px;
+}
+
+.playing-field__visual-task {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.editor-block {
+    width: 100%;
+    height: 100%;
+    border: 5px solid black;
+    border-radius: 2%;
+}
+.list-levels {
+    width: 400px;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 1;
+    background-color: black;
 }
