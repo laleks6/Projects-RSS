@@ -7,8 +7,6 @@ import { EventEmitter } from './emitter'
 
 export class Editor {
     
-    constructor(){}
-    
     checkInput = (value: string) => {
         const input = document.querySelector('.editor__input') as HTMLInputElement
         const btnEnter: HTMLElement = document.querySelector('.editor__img-btn') as HTMLElement;
@@ -18,8 +16,7 @@ export class Editor {
         const eventEmitter = new EventEmitter()
         const level = new Level('active')
         eventEmitter.subscribe('win', () => {
-            let taskVal = `task${level.returnIdLevels()}`
-            let taskValTable = `task${+level.returnIdLevels() + 1}`
+            const taskValTable = `task${+level.returnIdLevels() + 1}`
             table.tableFilling(taskValTable)
             level.switchingLevels()
             view.addTags(taskValTable)
@@ -27,7 +24,7 @@ export class Editor {
         
         btnEnter.addEventListener('click', () => {
             
-            let inputValue = input.value;
+            const inputValue = input.value;
             console.log(inputValue)
             if(inputValue === task[value].answer){
                 console.log('win')
@@ -37,7 +34,7 @@ export class Editor {
             }
         })
         document.addEventListener( 'keydown', (event) => {
-            let inputValue = input.value;
+            const inputValue = input.value;
             if( event.code === 'Enter' ) {
                 if(inputValue === task[value].answer){
                     tableBlock?.classList.add('win')
@@ -45,7 +42,7 @@ export class Editor {
                     eventEmitter.dispath('win')
 
                 }
-            };
+            }
           });
 
         // input.addEventListener('input', (event) => {

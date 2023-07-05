@@ -9,7 +9,6 @@ export class Level {
     }
 
     eventLevels = () => {
-        let count = 0
         for (let i = 0; i < this.listItem.length; i++) {
             this.listItem[i].addEventListener('click', (event) => {
                 // if(i > 0 && i < 9){

@@ -9,20 +9,21 @@ const view = new View()
 const level = new Level('active')
 const editor = new Editor()
 
-view.addHighlighting()
+
 
 level.eventLevels()
 const eventEmitter = new EventEmitter()
 eventEmitter.subscribe('start', () => {
-    let taskVal = `task${level.returnIdLevels()}`
+    const taskVal = `task${level.returnIdLevels()}`
     console.log(level.returnIdLevels())
     table.tableFilling(taskVal)
     view.addTags(taskVal)
     editor.checkInput(taskVal)
 })
 eventEmitter.dispath('start')
+view.addHighlighting()
 eventEmitter.subscribe('view', () => {
-
+    const i = 0
 })
 
 
