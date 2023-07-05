@@ -1,9 +1,13 @@
+/* eslint-disable no-undef */
+/* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
+//const html = './index.html';
+
 
 const devServer = (isDev) => !isDev ? {} : {
     devServer: {
@@ -25,7 +29,7 @@ module.exports = ({development}) => ({
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].[contenthash].js',
-    assetModuleFilename: 'assets/[hash][ext]',
+    assetModuleFilename: 'src/assets/[hash][ext]',
   },
   module: {
     rules: [
@@ -36,7 +40,7 @@ module.exports = ({development}) => ({
         },
         {
             test: /\.(?:ico|gif|png|jpg|jpeg|svg)$/i,
-            type: 'asset/inline',
+            type: 'asset/resource',
           },
           {
             test: /\.(woff(2)?|eot|ttf|otf)$/i,
@@ -49,7 +53,8 @@ module.exports = ({development}) => ({
           {
             test: /\.s[ac]ss$/i,
             use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
-          }
+          },
+
     ]
   },
   resolve: {
@@ -57,11 +62,14 @@ module.exports = ({development}) => ({
   },
   plugins: [
     ...esLintPlugin(development),
-    new HtmlWebpackPlugin({ template: './src/index.html' }),
+    new HtmlWebpackPlugin({ 
+      filename: 'index.html',
+      template: './src/index.html' }),
     new MiniCssExtractPlugin({ filename: '[name].[contenthash].css' }),
     new CopyPlugin({
         patterns: [{
-          from: 'public',
+          from: path.resolve(__dirname, 'src/assets'),
+          to: path.resolve(__dirname, 'dist/assets'),
           noErrorOnMissing: true,
         }],
       }),
