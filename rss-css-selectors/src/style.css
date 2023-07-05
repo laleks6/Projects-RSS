@@ -21,17 +21,19 @@ body {
 
 .selectors-block {
     position: fixed;
-    width: calc(100% - 400px);
+    width: 70%;
     top: 0;
     bottom: 0;
     left: 0;
     background-color: white;
+    padding: 10px;
+    overflow-x: scroll;
 }
 .selections {
     display: flex;
 }
 .playing-field {
-
+    width: 100%;
 }
 .playing-field__header {
     width: 100%;
@@ -43,19 +45,171 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding-bottom: 40px;
+}
+
+.block-table {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+.table {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60%;
+    height: 200px;
+    background-color: chocolate;
+    transform: rotateX(322deg);
+    border-bottom: 20px solid rgb(190, 96, 29);
+    box-shadow: -2px 32px 20px 0px rgba(0, 0, 0, 0.2);
+    gap: 10px;
 }
 .editor-block {
+    position: relative;
+    display: flex;
     width: 100%;
     height: 100%;
     border: 5px solid black;
     border-radius: 2%;
+    padding: 5px;
+} 
+.header-editor {
+    display: flex;
+    justify-content: space-between;
+    background-color: rgb(154, 97, 97);
+    padding: 5px;
 }
+
+.editor, .viewer {
+    width: 50%;
+    height: 100%;
+}
+
+
+.editor {
+    background-color: rgb(255, 255, 255);
+}
+.main-editor{
+    display: flex;
+}
+.main-editor > .list {
+    background-color:rgb(212, 99, 128);
+}
+.list__item {
+    padding: 5px;
+    list-style-type: none;
+}
+.editor__field {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+
+}
+.editor__input {
+    height: 20px;
+    border: none;
+    outline: none;
+}
+
+.editor__img-btn {
+    width: 35px;
+}
+.viewer {
+    background-color: rgb(255, 0, 76);
+}
+
 .list-levels {
-    width: 400px;
+    width: 30%;
     position: fixed;
     top: 0;
     bottom: 0;
     right: 0;
     z-index: 1;
     background-color: black;
+    padding: 5px;
+}
+
+.list__item-levels {
+    padding: 5px;
+    list-style-type: none;
+    background-color: none;
+    color: rgb(156, 154, 154);
+
+}
+.list__item-levels::before {
+    content: "\2611";
+    color: rgb(156, 154, 154);
+}
+
+.table__plate {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    background-color: white;
+    border-radius: 50%;
+    border-bottom: 8px solid rgb(224, 220, 220);
+    box-shadow: 0px 9px 6px 0px rgba(0, 0, 0, 0.5);
+}
+.table__apple {
+    display: block;
+    position: relative;
+    width: 20px;
+    height: 20px;
+    background-color: red;
+    border-radius: 50%;
+    border-bottom: 8px solid rgb(196, 54, 54);
+    box-shadow: 0px 9px 6px 0px rgba(0, 0, 0, 0.5);
+    z-index: 1;
+}
+.main-viewer {
+    background-color:rgb(255, 0, 76)
+}
+.main-viewer > .code-highlighting:hover{
+    color: rgb(253, 253, 253);
+}
+.animation-b {
+    animation: move 1s infinite linear;
+}
+
+@keyframes move {
+    0% {
+        transform:  scale(1);
+    }
+    25% {
+        transform:  scale(0.9);
+    }
+    50% {
+        transform:  scale(0.8);
+    }
+    75% {
+        transform:  scale(0.9);
+    }
+    100% {
+        transform:  scale(1);
+    }
+}
+
+.list__item--active  {
+    color: rgb(255, 255, 255);
+}
+.list__item--active::before {
+    color: rgb(255, 255, 255);
+}
+
+.list__item--finished  {
+    color: rgb(152, 233, 120);
+}
+.list__item--finished::before {
+    color: rgb(152, 233, 120);
+}
+
+.list__item--skip  {
+    color: rgb(223, 69, 69);
+}
+.list__item--skip::before {
+    color: rgb(223, 69, 69);
 }
