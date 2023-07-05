@@ -15,15 +15,15 @@ level.eventLevels()
 const eventEmitter = new EventEmitter()
 eventEmitter.subscribe('start', () => {
     let taskVal = `task${level.returnIdLevels()}`
+    console.log(level.returnIdLevels())
     table.tableFilling(taskVal)
     view.addTags(taskVal)
     editor.checkInput(taskVal)
 })
+eventEmitter.dispath('start')
 eventEmitter.subscribe('view', () => {
 
 })
 
-
-eventEmitter.dispath('start')
 
     
