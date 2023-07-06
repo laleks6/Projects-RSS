@@ -1,5 +1,6 @@
 export class EventEmitter {
     #listeners: {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         [key: string]: any
     } = {}
     #getCallBackFor(eventName:string){
@@ -14,7 +15,7 @@ export class EventEmitter {
         }
         
     }
-    subscribe(eventName:string, callback: any){
+    subscribe(eventName:string, callback: () =>void){
         const subs = this.#getCallBackFor(eventName);
 
         subs.push(callback);
@@ -23,7 +24,7 @@ export class EventEmitter {
         
         
     }
-    unsubscrib(eventName: string, callback: any){
+    unsubscrib(eventName: string, callback: () =>void){
         const subs = this.#getCallBackFor(eventName)
         .filter((item: () => void) => item !== callback);
 
@@ -31,6 +32,6 @@ export class EventEmitter {
     }
     dispath(eventName: string){
         this.#getCallBackFor(eventName)
-        .forEach((callback: any) => callback())
+        .forEach((callback: () =>void) => callback())
     }
 }

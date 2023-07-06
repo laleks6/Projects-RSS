@@ -8,6 +8,7 @@ const table = new Table()
 const view = new View()
 const level = new Level('active')
 const editor = new Editor()
+const tableBlock: HTMLTableElement | null = document.querySelector('.table');
 
 
 
@@ -20,11 +21,12 @@ eventEmitter.subscribe('start', () => {
     view.addTags(taskVal)
     editor.checkInput(taskVal)
 })
-eventEmitter.dispath('start')
+if(tableBlock?.classList.contains('start')) {
+    eventEmitter.dispath('start')
+}
+
 view.addHighlighting()
-eventEmitter.subscribe('view', () => {
-    const i = 0
-})
+
 
 
     

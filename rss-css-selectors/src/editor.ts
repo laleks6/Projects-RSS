@@ -6,44 +6,77 @@ import { EventEmitter } from './emitter'
 
 
 export class Editor {
-    
+    eventEmitter = new EventEmitter()
+    table = new Table()
+    view = new View()
+    tableBlock: HTMLTableElement | null = document.querySelector('.table');
+    level = new Level('active')
+    constructor(){
+        this.eventEmitter.subscribe('win', () => {
+            const taskValTable = `task${+this.level.returnIdLevels() + 1}`
+            console.log('next > win' + taskValTable)
+            this.table.tableFilling(taskValTable)
+            this.level.switchingLevels()
+            this.view.addTags(taskValTable)
+            this.checkInput(taskValTable)
+            this.level.addNextClassActive(+this.level.returnIdLevels() + 1)
+            this.tableBlock?.classList.remove('start')
+        })
+    }
     checkInput = (value: string) => {
         const input = document.querySelector('.editor__input') as HTMLInputElement
         const btnEnter: HTMLElement = document.querySelector('.editor__img-btn') as HTMLElement;
-        const tableBlock: HTMLTableElement | null = document.querySelector('.table');
-        const table = new Table()
-        const view = new View()
-        const eventEmitter = new EventEmitter()
-        const level = new Level('active')
-        eventEmitter.subscribe('win', () => {
-            const taskValTable = `task${+level.returnIdLevels() + 1}`
-            table.tableFilling(taskValTable)
-            level.switchingLevels()
-            view.addTags(taskValTable)
-        })
         
-        btnEnter.addEventListener('click', () => {
-            
+        btnEnter.addEventListener('mousedown', () => {
+            btnEnter.classList.toggle('editor__img-btn--active')
             const inputValue = input.value;
             console.log(inputValue)
-            if(inputValue === task[value].answer){
-                console.log('win')
-                tableBlock?.classList.add('win')
-                
-
+            console.log(input.value)
+            if(Array.isArray(task[value].answer)){
+                task[value].answer.forEach((el: string) => {
+                    if(inputValue === el){
+                        console.log('win')
+                        input.value = ''
+                        this.eventEmitter.dispath('win')
+                        
+        
+                    }
+                })
+            }else {
+                if(inputValue === task[value].answer){
+                    console.log('win')
+                    input.value = ''
+                    this.eventEmitter.dispath('win')
+                }
             }
         })
+        btnEnter.addEventListener('mouseup', () => {
+            btnEnter.classList.toggle('editor__img-btn--active')
+        })
+
         document.addEventListener( 'keydown', (event) => {
+            btnEnter.classList.toggle('editor__img-btn--active')
             const inputValue = input.value;
             if( event.code === 'Enter' ) {
-                if(inputValue === task[value].answer){
-                    tableBlock?.classList.add('win')
-                    console.log('win')
-                    eventEmitter.dispath('win')
-
+                if(Array.isArray(task[value].answer)){
+                    task[value].answer.forEach((el: string) => {
+                        if(inputValue === el){
+                            console.log('win')
+                            input.value = ''
+                            this.eventEmitter.dispath('win')
+                        }
+                    })
+                }else {
+                    if(inputValue === task[value].answer){
+                        console.log('win')
+                        input.value = ''
+                        this.eventEmitter.dispath('win')
+                    }
                 }
             }
           });
+          document.addEventListener( 'keyup', () => {
+            btnEnter.classList.toggle('editor__img-btn--active')})
 
         // input.addEventListener('input', (event) => {
         //     const target: EventTarget = event.target as EventTarget;

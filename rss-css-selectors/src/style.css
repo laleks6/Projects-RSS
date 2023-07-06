@@ -69,7 +69,7 @@ body {
     position: relative;
     display: flex;
     width: 100%;
-    height: 100%;
+    height: 531px;
     border: 5px solid black;
     border-radius: 2%;
     padding: 5px;
@@ -105,6 +105,7 @@ body {
     flex-wrap: wrap;
     justify-content: space-between;
     width: 100%;
+    padding: 0px 5px 0px 5px;
 
 }
 .editor__input {
@@ -115,6 +116,9 @@ body {
 
 .editor__img-btn {
     width: 35px;
+}
+.editor__img-btn--active{
+    transform: scale(0.9);
 }
 .viewer {
     background-color: rgb(255, 0, 76);
@@ -129,6 +133,7 @@ body {
     z-index: 1;
     background-color: black;
     padding: 5px;
+    font-size: 16px;
 }
 
 .list__item-levels {
@@ -138,10 +143,10 @@ body {
     color: rgb(156, 154, 154);
 
 }
-.list__item-levels::before {
+/* .list__item-levels::before {
     content: "\2611";
     color: rgb(156, 154, 154);
-}
+} */
 
 .table__plate {
     display: flex;
@@ -155,7 +160,9 @@ body {
     box-shadow: 0px 9px 6px 0px rgba(0, 0, 0, 0.5);
 }
 .table__apple {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: relative;
     width: 20px;
     height: 20px;
@@ -165,8 +172,60 @@ body {
     box-shadow: 0px 9px 6px 0px rgba(0, 0, 0, 0.5);
     z-index: 1;
 }
+.table__apple--big {
+    width: 35px;
+    height: 35px;
+}
+.table__banana {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 10px;
+    height: 40px;
+    background-color:rgb(246, 237, 107);
+    border-radius: 61% 98% 98% 79%;
+    z-index: 1;
+}
+
+.table__banana--big {
+    width: 15px;
+    height: 60px;
+}
+/* .table__banana::after {
+    position: relative;
+    content: ' ';
+    top: -5px;
+    width: 5px;
+    height: 50px;
+    background-color: black;
+    z-index: 2;
+} */
+.table__bento {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 65px;
+    height: 65px;
+    background-color: rgb(216 38 79);
+}
+.table__lemon{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 20px;
+    height: 20px;
+    background-color: rgb(255, 251, 0);
+    border-radius: 50%;
+    border-bottom: 8px solid rgb(196, 182, 54);
+    box-shadow: 0px 9px 6px 0px rgba(0, 0, 0, 0.5);
+    z-index: 1;
+}
 .main-viewer {
-    background-color:rgb(255, 0, 76)
+    background-color:rgb(255, 0, 76);
+    padding: 0px 5px 0px 5px;
 }
 .main-viewer > .code-highlighting:hover{
     color: rgb(253, 253, 253);
