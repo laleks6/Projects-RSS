@@ -1,0 +1,44 @@
+#menu {
+    display: block;
+    width: 30%;
+    height: 500px;
+    gap: 10px;
+    
+}
+
+.block-btns-page-change, 
+.block-create-car,
+.block-update-car,
+.block-control-car {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 100%;
+}
+
+.btn-Garage, 
+.btn-Winner{
+    width: 80px;
+    height: 40px;
+    background-color: rgb(217, 140, 224);
+    color:rgb(201, 218, 110);
+    border-radius: 10%;
+}
+.btn-create-car,
+.btn-update-car,
+.btn-create-car,
+.btn-update-car,
+.btn-start,
+.btn-reset,
+.btn-generate{
+    width: 60px;
+    height: 30px;
+    background-color: rgb(217, 140, 224);
+    color:rgb(201, 218, 110);
+    border-radius: 10%;
+}
+
+.input-name{
+    width: 100px;
+}
+
