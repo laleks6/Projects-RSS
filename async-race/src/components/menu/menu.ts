@@ -55,7 +55,7 @@ export class ControlMenu  {
 
             blockCreateCar.className = 'block-create-car';
             inputName.id = 'input-name-create';
-            color.id = 'input-color';
+            color.id = 'input-color-create';
             btnCreateCar.className = 'btn btn-create-car';
 
             btnCreateCar.innerText = 'Create';
@@ -81,8 +81,9 @@ export class ControlMenu  {
 
             blockUpdateCar.className = 'block-update-car';
             inputName.id = 'input-name-update';
-            color.className = 'input input-color';
-            btnCreateCar.className = 'btn btn-update-car';
+            color.id = 'input-color-update';
+            btnCreateCar.id = 'btn-update-car';
+            btnCreateCar.className = 'btn';
 
             btnCreateCar.innerText = 'Update'
 
@@ -123,17 +124,16 @@ export class ControlMenu  {
         const btnCreate: Element = document.getElementsByClassName('btn-create-car')[0];
         btnCreate.addEventListener('click', async () => {
             const inputName = document.getElementById('input-name-create') as HTMLInputElement;
-            const inputColor = document.getElementById('input-color') as HTMLInputElement;
+            const inputColor = document.getElementById('input-color-create') as HTMLInputElement;
             const name = inputName.value !== '' ? inputName.value : this.random.createNameCar()
             const color = inputColor.value
             const objectNewCar:iNewCar = {
                 'name': name,
-                'color': color,
+                'color': color
             }
-            this.request.requestCreateCar(objectNewCar)
-            this.generate.generateCars('newCar', [objectNewCar])
-            const promisDataCars:IGarage[] = await this.request.requestGarage().
-                                            then(data =>{ return data});
+            await this.request.requestCreateCar(objectNewCar)
+            await this.generate.generateCars('newCar')
+
 
             
         })
