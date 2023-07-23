@@ -1,7 +1,14 @@
+import { Generate } from "../race-field/generate";
+import { iNewCar, IGarage } from "../types";
+import { Request } from "../request/request";
+import { Random } from "../random/random";
 
 export class ControlMenu  {
     // private body: HTMLElement = document.body
     // #blockMenu: HTMLElement | null = document.getElementById('menu');
+    generate: Generate = new Generate()
+    request: Request = new Request()
+    random: Random = new Random()
 
     createBlockMenu = ():void => {
         const menu: HTMLElement = document.createElement('div');
@@ -47,8 +54,8 @@ export class ControlMenu  {
             color.setAttribute('type', 'color');
 
             blockCreateCar.className = 'block-create-car';
-            inputName.className = 'input input-name';
-            color.className = 'input input-color';
+            inputName.id = 'input-name-create';
+            color.id = 'input-color';
             btnCreateCar.className = 'btn btn-create-car';
 
             btnCreateCar.innerText = 'Create';
@@ -73,7 +80,7 @@ export class ControlMenu  {
             color.setAttribute('type', 'color');
 
             blockUpdateCar.className = 'block-update-car';
-            inputName.className = 'input input-name';
+            inputName.id = 'input-name-update';
             color.className = 'input input-color';
             btnCreateCar.className = 'btn btn-update-car';
 
@@ -110,5 +117,25 @@ export class ControlMenu  {
            
         }
 
+    }
+
+    clickBtnCreate = () => {
+        const btnCreate: Element = document.getElementsByClassName('btn-create-car')[0];
+        btnCreate.addEventListener('click', async () => {
+            const inputName = document.getElementById('input-name-create') as HTMLInputElement;
+            const inputColor = document.getElementById('input-color') as HTMLInputElement;
+            const name = inputName.value !== '' ? inputName.value : this.random.createNameCar()
+            const color = inputColor.value
+            const objectNewCar:iNewCar = {
+                'name': name,
+                'color': color,
+            }
+            this.request.requestCreateCar(objectNewCar)
+            this.generate.generateCars('newCar', [objectNewCar])
+            const promisDataCars:IGarage[] = await this.request.requestGarage().
+                                            then(data =>{ return data});
+
+            
+        })
     }
 }
