@@ -8,10 +8,17 @@ export class Request {
         console.log(json)
         return json  
     }
+    getRequestCar = async (id:number) =>  {
+        const urlGarage = `/garage`
+        const response  = await fetch(`${this.url}${urlGarage}/${id}`);
+        const json: IGarage = await response.json();
+        console.log(json)
+        return json  
+    }
     requestFrameStartEngine = async (id: number) =>  {
         const urlGarage = `/engine`
         const metod = {'method': 'PATCH'}
-        const response: Response  = await fetch(`${this.url}${urlGarage}?id=${id+1}&status=started`, metod);
+        const response: Response  = await fetch(`${this.url}${urlGarage}?id=${id}&status=started`, metod);
         const json = await response.json() as Promise<ITime>;
         
         return json  
@@ -19,7 +26,7 @@ export class Request {
     requestFrameDriveEngine = async (id: number) =>  {
         const urlGarage = `/engine`
         const metod = {'method': 'PATCH'}
-        const response: Response  = await fetch(`${this.url}${urlGarage}?id=${id+1}&status=drive`, metod);
+        const response: Response  = await fetch(`${this.url}${urlGarage}?id=${id}&status=drive`, metod);
         const json = await response.json() as Promise<iDriveStatus> ;
         
         return json  
@@ -27,7 +34,7 @@ export class Request {
     requestFrameStopEngine = async (id: number) =>  {
         const urlGarage = `/engine`
         const metod = {'method': 'PATCH'}
-        const response: Response  = await fetch(`${this.url}${urlGarage}?id=${id+1}&status=stopped`, metod);
+        const response: Response  = await fetch(`${this.url}${urlGarage}?id=${id}&status=stopped`, metod);
         const json = await response.json() as Promise<ITime>;
 
         return json  
@@ -35,13 +42,13 @@ export class Request {
     requestStatusEngine = async (id: number) =>  {
         const urlGarage = `/engine`
         const metod = {'method': 'PATCH'}
-        const response: Response  = await fetch(`${this.url}${urlGarage}?id=${id+1}&status=started`, metod);
+        const response: Response  = await fetch(`${this.url}${urlGarage}?id=${id}&status=started`, metod);
         const json = await response.json() as Promise<ITime>;
         
         return json  
     }
 
-    requestCreateCar = async (obj?: iNewCar) =>  {
+    requestCreateCar = async (obj: iNewCar) =>  {
         const urlGarage = `/garage`
         const metod = {'method': 'POST',
                         'body': JSON.stringify(obj),
@@ -51,17 +58,31 @@ export class Request {
                         }
 
         const response: Response  = await fetch(`${this.url}${urlGarage}`, metod);
-        // const json = await response.json().then(data => console.log(data.status))
+        const json = await response.json().then(data => console.log(data))
         
-        // return json  
+        return json  
     }
     requestDeleteCar = async (id:number) =>  {
         const urlGarage = `/garage`
         const metod = {'method': 'DELETE'}
+        const response: Response  = await fetch(`${this.url}${urlGarage}/${id}`, metod);
+        const json = await response.json()
+        
+        return json  
+    }
+
+    requestUpdateCar = async (obj?: iNewCar, id?: number) =>  {
+        const urlGarage = `/garage`
+        const metod = {'method': 'Put',
+                        'body': JSON.stringify(obj),
+                        'headers': {
+                            'Content-Type': 'application/json'
+                            }
+                        }
 
         const response: Response  = await fetch(`${this.url}${urlGarage}/${id}`, metod);
-        // const json = await response.json().then(data => console.log(data.status))
+        const json = await response.json().then(data => console.log(data.status))
         
-        // return json  
+        return json  
     }
 }
