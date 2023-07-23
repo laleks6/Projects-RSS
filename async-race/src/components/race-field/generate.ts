@@ -2,14 +2,12 @@ import { IGarage } from "components/types";
 import { Request } from "../request/request";
 import { Random } from "../random/random";
 import { iNewCar } from "../types";
+import { AnimationCars } from "./animation-car";
 
 export class Generate {
- 
     request: Request = new Request
+    animationCars: AnimationCars = new AnimationCars
     
-
-      
-
     #addsvg = (color?: string) => {
         let svg:string
         const svgCar = `<?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
@@ -37,20 +35,27 @@ export class Generate {
         return svg
     }
 //inputName?: string | undefined, inputColor?: string | undefined
-    generateCars = async(count: string, obj?:iNewCar[]) => {
-        let promisDataCars:IGarage[] | iNewCar[] | undefined; 
-
+    generateCars = async(count: string) => {
+        let promisDataCars:IGarage[] | undefined 
+         const garage = await this.request.requestGarage().
+        then(data =>{ return data});
         if(count === 'default'){
             promisDataCars = await this.request.requestGarage().
             then(data =>{ return data});
-        }else if(count === 'newCar'){
-            promisDataCars = obj;
-        }
 
+        }else if(count === 'newCar'){
+            promisDataCars = await this.request.getRequestCar(+garage[garage.length-1].id).
+            then(data =>{ return [data]}) ;
+        }
+        
         if (promisDataCars !== undefined) {
+           
             for (let i = 0; i < promisDataCars.length; i++) {  
-                const name = promisDataCars[i].name
-                const color = promisDataCars[i].color;
+                const name = promisDataCars[i].name;
+                const color = promisDataCars[i].color ;
+                const id = promisDataCars[i].id 
+
+                
                 // const id: number = promisDataCars[i].id;
     
                 const raceField: HTMLElement | null = document.getElementById('race-field');  
@@ -70,6 +75,7 @@ export class Generate {
                 const roadRace: HTMLElement = document.createElement('div');
     
                 blockRace.className = 'block-race';
+                blockRace.id = `${id}`;
                 carInfo.className = 'block-race__car-info';
                 btnSelect.className = 'btn btn-seclect';
                 btnRemove.className = 'btn btn-remove';
@@ -87,15 +93,6 @@ export class Generate {
     
                 btnStart.innerText = 'Start'
                 btnStop.innerText = 'Stop'
-                // if(count === 'default'){
-                //     name = promisDataCars[i].name;
-                //     color = promisDataCars[i].color;
-                // }else if(count === 'newCar') {
-                //     if(inputName !== undefined){
-                //         name = inputName.length > 0 ? inputName : this.createNameCar();
-                //         color = promisDataCars[i].color;
-                //     }
-                // }
                 
                 carBrand.innerText = name ;
                 imgCar.innerHTML = this.#addsvg(color)
@@ -118,22 +115,65 @@ export class Generate {
                     carAndFlag.append(imgCar);
                     carAndFlag.append(imgFlag);
                 }
+                this.animationCars.clickBtnStart()
+                this.animationCars.clickBtnStop()
+                this.clickBtnSelect()
+                this.clickBtnRemove()
                
             }
         }
         
     }
 
-    clickBtnRemove = () => {
-        const btnRemove: HTMLCollectionOf<Element> = document.getElementsByClassName('btn-remove')
+    clickBtnSelect = () => {
+        
+        const blockRace = Array.from((document.getElementsByClassName('block-race')) as HTMLCollectionOf<HTMLElement>)
+        const btnRemove = Array.from((document.getElementsByClassName('btn-seclect')) as HTMLCollectionOf<HTMLElement>)
+        const inputName = document.getElementById('input-name-update') as HTMLInputElement;
+        const inputColor = document.getElementById('input-color-update') as HTMLInputElement;
+        const btnUpdate: HTMLElement | null = document.getElementById('btn-update-car');
+        const blockCar = Array.from((document.getElementsByClassName('car-brand')) as HTMLCollectionOf<HTMLElement>)
+        const blockSvg = Array.from((document.getElementsByClassName('svg-car')) as HTMLCollectionOf<HTMLElement>)
+        // const blockCar = Array.from((document.getElementsByClassName('block-race')) as HTMLCollectionOf<HTMLElement>)
         for(let i = 0; i < btnRemove.length; i++) {
-            console.log( btnRemove.length)
-            btnRemove[i].addEventListener('click', () => {
-                const blockCaer: HTMLCollectionOf<Element> = document.getElementsByClassName('block-race')
-                console.log('ada')
-                blockCaer[i].remove()
-                this.request.requestDeleteCar(i)
-                this.request.requestGarage()
+            
+            btnRemove[i].addEventListener('click', async () => {
+                const car = await this.request.getRequestCar(+blockRace[i].id).then(data => {return data})
+                console.log('SELECT')
+                inputName?.focus()
+                const name: string = car.name
+                const color: string = car.color
+                inputName.value = car.name
+                inputColor.value = car.color
+                btnUpdate?.addEventListener('click', async () => {
+                    blockCar[i].innerText = inputName.value
+                    blockSvg[i].style.fill = inputColor.value
+                    const objectUpdateCar:iNewCar = {
+                        'name': inputName.value,
+                        'color': inputColor.value
+                    }
+                    await this.request.requestUpdateCar(objectUpdateCar, +blockRace[i].id)
+                    await this.request.requestGarage()
+                    inputName.value = ''
+                    inputColor.value = '#000000'
+                })
+                
+            })
+        }
+
+    }
+
+    clickBtnRemove = async () => {
+        const btnRemove = Array.from((document.getElementsByClassName('btn-remove')) as HTMLCollectionOf<HTMLElement>)
+        const blockCar = Array.from((document.getElementsByClassName('block-race')) as HTMLCollectionOf<HTMLElement>)
+        for(let i = 0; i < btnRemove.length; i++) {
+            btnRemove[i].addEventListener('click', async () => {
+                console.log('REMOVE')
+                // console.log( btnRemove.length)
+                // console.log( blockCar.length)
+                await this.request.requestDeleteCar(+blockCar[i].id)
+                await this.request.requestGarage()
+                blockCar[i].remove()
             })
         }
 
