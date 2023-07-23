@@ -38,16 +38,13 @@ export class Generate {
     }
 //inputName?: string | undefined, inputColor?: string | undefined
     generateCars = async(count: string, obj?:iNewCar[]) => {
-        let promisDataCars:IGarage[] | iNewCar[] | undefined 
-        let length = 0
+        let promisDataCars:IGarage[] | iNewCar[] | undefined; 
+
         if(count === 'default'){
-            length = 4
             promisDataCars = await this.request.requestGarage().
             then(data =>{ return data});
-            
         }else if(count === 'newCar'){
-            promisDataCars = obj
-            length = 1
+            promisDataCars = obj;
         }
 
         if (promisDataCars !== undefined) {
