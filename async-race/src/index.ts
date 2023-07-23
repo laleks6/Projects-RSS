@@ -35,12 +35,14 @@ base.createMainBlock();
  menu.clickBtnCreate()
  raceField.createBlockRaceField();
  generate.generateCars('default') 
-generate.clickBtnRemove()
+
 
 
 setTimeout(()=>{
     animationCars.clickBtnStart()
     animationCars.clickBtnStop()
+    generate.clickBtnSelect()
+    generate.clickBtnRemove()
 }, 500)
 
 
