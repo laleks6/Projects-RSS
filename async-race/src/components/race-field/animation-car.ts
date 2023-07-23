@@ -6,6 +6,7 @@ export class AnimationCars {
     clickBtnStart = () => {
         const btnStart: HTMLCollectionOf<Element> = document.getElementsByClassName('btn-start-car');
         const blockCar: HTMLCollectionOf<Element>= document.getElementsByClassName('block-car-and-flag');
+        const blockRace = Array.from((document.getElementsByClassName('block-race')) as HTMLCollectionOf<HTMLElement>)
         console.log(`${btnStart.length} - length ${btnStart}`)
         
             
@@ -13,8 +14,10 @@ export class AnimationCars {
             btnStart[i]?.addEventListener('click', () => {
                 if(!blockCar[i]?.classList.contains('race--active')) {
                     console.log('START')
+                    console.log(blockRace)
+                    console.log(blockRace[i])
                     blockCar[i]?.classList.add('race--active');
-                    this.moveCar(i)
+                    this.moveCar(i, +blockRace[i].id)
                 }
             })    
         }
@@ -44,11 +47,11 @@ export class AnimationCars {
         return statusEror
     }
 
-    moveCar = async (index:number): Promise<void> => {
+    moveCar = async (index:number, id:number): Promise<void> => {
 
         const blockCar = Array.from((document.getElementsByClassName('img-car')) as HTMLCollectionOf<HTMLElement>)[0];
         const car = Array.from((document.getElementsByClassName('svg-car')) as HTMLCollectionOf<HTMLElement>);
-        const statusEngin = await this.request.requestFrameStartEngine(index)
+        const statusEngin = await this.request.requestFrameStartEngine(id)
 
         let startPoint = 0;
         const velocity = statusEngin.velocity
@@ -68,7 +71,7 @@ export class AnimationCars {
             if(startPoint > widthRoad || startPoint === 1) {
                 console.log('rEALfinish')
                 console.log(startPoint);
-                const statusEnginStop =  this.request.requestFrameStopEngine(index);  
+                const statusEnginStop = this.request.requestFrameStopEngine(id);  
             }
 
             if(startPoint < widthRoad && startPoint !== 1) {
@@ -79,7 +82,7 @@ export class AnimationCars {
 
         }
         moveFrame()
-        startPoint = await this.returnStatusEror(index).then(data => { return data }) as unknown as number
+        startPoint = await this.returnStatusEror(id).then(data => { return data }) as unknown as number
       
 
         console.log(widthRoad)
