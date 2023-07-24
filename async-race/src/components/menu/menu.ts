@@ -2,6 +2,8 @@ import { Generate } from "../race-field/generate";
 import { iNewCar, IGarage } from "../types";
 import { Request } from "../request/request";
 import { Random } from "../random/random";
+import { Event } from "../event/event";
+
 
 export class ControlMenu  {
     // private body: HTMLElement = document.body
@@ -9,20 +11,25 @@ export class ControlMenu  {
     generate: Generate = new Generate()
     request: Request = new Request()
     random: Random = new Random()
+    event: Event = new Event()
 
     createBlockMenu = ():void => {
         const menu: HTMLElement = document.createElement('div');
+        const garage: HTMLElement = document.createElement('div');
         const main: HTMLElement | null = document.getElementById('main')
 
         menu.id = 'menu'
+        garage.className = 'menu__block-Garage'
         menu.className = 'block-menu'
         if(main !== null) {
             main.append(menu);
+            menu.append(garage)
         }
     }
 
     createBtnPageChange = ():void => {
         const  blockMenu: HTMLElement | null = document.getElementById('menu');
+       
         console.log(blockMenu !== null)
         if(blockMenu !== null) {
             console.log(blockMenu !== null)
@@ -37,13 +44,14 @@ export class ControlMenu  {
             btnGarage.innerText = 'Garage';
             btnWinner.innerText = 'Winner';
 
-            blockMenu.append(blockBtnsPageChange);
+            blockMenu.prepend(blockBtnsPageChange);
             blockBtnsPageChange.append(btnGarage);
             blockBtnsPageChange.append(btnWinner);
         }
     }
     createBlockCreateCar = ():void => {
         const  blockMenu: HTMLElement | null = document.getElementById('menu');
+        const garage: Element = document.getElementsByClassName('menu__block-Garage')[0]
         if(blockMenu !== null) {
             const blockCreateCar: HTMLElement = document.createElement('div');
             const inputName: HTMLElement = document.createElement('input');
@@ -61,7 +69,7 @@ export class ControlMenu  {
             btnCreateCar.innerText = 'Create';
             
 
-            blockMenu.append(blockCreateCar);
+            garage.append(blockCreateCar);
             blockCreateCar.append(inputName);
             blockCreateCar.append(color);
             blockCreateCar.append(btnCreateCar);
@@ -70,6 +78,7 @@ export class ControlMenu  {
     
     createBlockUpdateCar = ():void => {
         const  blockMenu: HTMLElement | null = document.getElementById('menu');
+        const garage: Element = document.getElementsByClassName('menu__block-Garage')[0]
         if(blockMenu !== null) {
             const blockUpdateCar: HTMLElement = document.createElement('div');
             const inputName: HTMLElement = document.createElement('input');
@@ -87,7 +96,7 @@ export class ControlMenu  {
 
             btnCreateCar.innerText = 'Update'
 
-            blockMenu.append(blockUpdateCar);
+            garage.append(blockUpdateCar);
             blockUpdateCar.append(inputName);
             blockUpdateCar.append(color);
             blockUpdateCar.append(btnCreateCar);
@@ -96,6 +105,7 @@ export class ControlMenu  {
 
     createBlockControlCar = ():void => {
         const  blockMenu: HTMLElement | null = document.getElementById('menu');
+        const garage: Element = document.getElementsByClassName('menu__block-Garage')[0]
         if(blockMenu !== null) {
             const blockControlCar: HTMLElement = document.createElement('div');
             const btnStart: HTMLElement = document.createElement('button');
@@ -103,7 +113,7 @@ export class ControlMenu  {
             const btnGenerate: HTMLElement = document.createElement('button');
            
             blockControlCar.className = 'block-control-car';
-            btnStart.className = 'btn btn-start';
+            btnStart.className = 'btn btn-race';
             btnReset.className = 'btn btn-reset';
             btnGenerate.className = 'btn btn-generate'
 
@@ -111,12 +121,13 @@ export class ControlMenu  {
             btnReset.innerText = 'Reset'
             btnGenerate.innerText = 'Generate'
             
-            blockMenu.append(blockControlCar);
+            garage.append(blockControlCar);
             blockControlCar.append(btnStart);
             blockControlCar.append(btnReset);
             blockControlCar.append(btnGenerate);
            
         }
+        this.event.generateCars()
 
     }
 
@@ -126,16 +137,17 @@ export class ControlMenu  {
             const inputName = document.getElementById('input-name-create') as HTMLInputElement;
             const inputColor = document.getElementById('input-color-create') as HTMLInputElement;
             const name = inputName.value !== '' ? inputName.value : this.random.createNameCar()
-            const color = inputColor.value
+            const color = this.random.createColorCar()
             const objectNewCar:iNewCar = {
                 'name': name,
                 'color': color
             }
             await this.request.requestCreateCar(objectNewCar)
-            await this.generate.generateCars('newCar')
+            await this.generate.generateBlockCars('newCar')
+           
 
-
-            
         })
+        this.event.carRace()
     }
+    
 }

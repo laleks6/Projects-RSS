@@ -1,25 +1,31 @@
 import { Request } from "../request/request";
 
+
 export class AnimationCars {
     request: Request = new Request()
+    
 
     clickBtnStart = () => {
-        const btnStart: HTMLCollectionOf<Element> = document.getElementsByClassName('btn-start-car');
-        const blockCar: HTMLCollectionOf<Element>= document.getElementsByClassName('block-car-and-flag');
+        const btnStart = Array.from((document.getElementsByClassName('btn-start-car')) as HTMLCollectionOf<HTMLElement>)
+        const blockCar = Array.from((document.getElementsByClassName('block-car-and-flag')) as HTMLCollectionOf<HTMLElement>)
         const blockRace = Array.from((document.getElementsByClassName('block-race')) as HTMLCollectionOf<HTMLElement>)
         console.log(`${btnStart.length} - length ${btnStart}`)
         
             
-        for(let i = 0; i < btnStart.length; i++){       
-            btnStart[i]?.addEventListener('click', () => {
-                if(!blockCar[i]?.classList.contains('race--active')) {
-                    console.log('START')
-                    console.log(blockRace)
-                    console.log(blockRace[i])
-                    blockCar[i]?.classList.add('race--active');
-                    this.moveCar(i, +blockRace[i].id)
-                }
-            })    
+        for(let i = 0; i < btnStart.length; i++){     
+           const  eventBtnStart = () => {
+            if(!blockCar[i]?.classList.contains('race--active')) {
+                console.log('START')
+                console.log(blockRace)
+                console.log(blockRace[i])
+                blockCar[i]?.classList.add('race--active');
+                this.moveCar(i, +blockRace[i].id)
+                btnStart[i]?.removeEventListener('click', eventBtnStart)
+            }
+           }  
+            btnStart[i]?.addEventListener('click', eventBtnStart)
+            
+             
         }
     }
 
@@ -48,7 +54,8 @@ export class AnimationCars {
     }
 
     moveCar = async (index:number, id:number): Promise<void> => {
-
+        console.log(`index-  ${index}`)
+        console.log(`id-  ${id}`)
         const blockCar = Array.from((document.getElementsByClassName('img-car')) as HTMLCollectionOf<HTMLElement>)[0];
         const car = Array.from((document.getElementsByClassName('svg-car')) as HTMLCollectionOf<HTMLElement>);
         const statusEngin = await this.request.requestFrameStartEngine(id)
