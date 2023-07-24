@@ -20,6 +20,7 @@ export class AnimationCars {
                 console.log(blockRace[i])
                 blockCar[i]?.classList.add('race--active');
                 this.moveCar(i, +blockRace[i].id)
+                this.timer(0)
                 btnStart[i]?.removeEventListener('click', eventBtnStart)
             }
            }  
@@ -73,11 +74,23 @@ export class AnimationCars {
         const dx = (widthRoad - startPoint) / frame
         console.log(time)
         // console.log(statusEngin)
+        
         const moveFrame = () => {
-
-            if(startPoint > widthRoad || startPoint === 1) {
+            let countWinners = 0
+            if(startPoint > widthRoad) {
                 console.log('rEALfinish')
                 console.log(startPoint);
+                countWinners++
+                if(countWinners === 1){
+                    
+                    this.timer(countWinners)
+                }
+                const statusEnginStop = this.request.requestFrameStopEngine(id);  
+            }
+            if(startPoint === 1) {
+                console.log('rEALfinish---500')
+                console.log(startPoint);
+                this.timer(1)
                 const statusEnginStop = this.request.requestFrameStopEngine(id);  
             }
 
@@ -93,6 +106,34 @@ export class AnimationCars {
       
 
         console.log(widthRoad)
+    }
+    timer = (stopCount:number) => {
+        let miliSeconds = 0
+        let seconds = 0
+        const timer = document.createElement('span')
+       
+        const tick =  ()  => {
+            miliSeconds+=1
+            if(miliSeconds === 100){
+                seconds+=1
+                miliSeconds = 0
+            }
+            this.returTime(miliSeconds, seconds, stopCount)
+            if(stopCount === 1) {
+                clearInterval(interval) 
+            }
+            
+        }
+        
+        const interval = setInterval(tick, 10)
+        console.log(`${miliSeconds}/${seconds} фффффф`)
+
+    }
+    returTime = (ms:number, s:number, status:number) => {
+        if(status === 1) {
+            console.log(`${ms}/${s} finis`)
+        }
+        console.log(`${ms}/${s} sssss`)
     }
 }
 

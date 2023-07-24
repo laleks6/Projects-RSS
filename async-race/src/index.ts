@@ -1,6 +1,7 @@
 import './components/base/base.css'
 import './components/menu/menu.css'
 import './components/race-field/race-field.css'
+import './components/pagination/pagination.css'
 import { Base } from "./components/base/base"
 import { ControlMenu } from "./components/menu/menu"
 import { RaceField } from './components/race-field/race-field'
@@ -9,6 +10,7 @@ import { AnimationCars } from './components/race-field/animation-car'
 import { Random } from './components/random/random'
 import { Event } from './components/event/event'
 import { Winners } from './components/winners/winners'
+import { Pagination } from './components/pagination/pagination'
 
 const base = new Base()
 const menu = new ControlMenu()
@@ -18,6 +20,7 @@ const winners = new Winners()
 const animationCars = new AnimationCars()
 const random = new Random()
 const event = new Event()
+const pagination = new Pagination()
 // random.createNameCar()
 const createMenu = async() => {
     const main = await base.createMainBlock();
@@ -41,10 +44,12 @@ base.createMainBlock();
  raceField.createBlockRaceField();
  generate.generateBlockCars('default') 
 
+
  setTimeout(()=>{
     event.carRace()
     event.clickBtnGarage()
     event.clickBtnWinners()
+    pagination.pagination()
  }, 500)
 
 

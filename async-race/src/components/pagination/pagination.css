@@ -1,0 +1,18 @@
+.block__li-pagination{
+    width: auto;
+    display: flex;
+}
+.list{
+    display: flex;
+    
+    gap: 5px
+}
+.item{
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    color: blueviolet;
+    border: 1px solid black;
+    font-size: 16px;
+    list-style-type: none;
+}

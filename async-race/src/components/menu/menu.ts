@@ -145,9 +145,10 @@ export class ControlMenu  {
             await this.request.requestCreateCar(objectNewCar)
             await this.generate.generateBlockCars('newCar')
            
-
+            window.location.reload()
         })
         this.event.carRace()
+        
     }
     
 }
