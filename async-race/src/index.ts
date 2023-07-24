@@ -7,13 +7,17 @@ import { RaceField } from './components/race-field/race-field'
 import { Generate } from './components/race-field/generate'
 import { AnimationCars } from './components/race-field/animation-car'
 import { Random } from './components/random/random'
+import { Event } from './components/event/event'
+import { Winners } from './components/winners/winners'
 
 const base = new Base()
 const menu = new ControlMenu()
 const raceField = new RaceField()
 const generate = new Generate()
+const winners = new Winners()
 const animationCars = new AnimationCars()
 const random = new Random()
+const event = new Event()
 // random.createNameCar()
 const createMenu = async() => {
     const main = await base.createMainBlock();
@@ -23,7 +27,7 @@ const createMenu = async() => {
     const updateCar = await menu.createBlockUpdateCar();
     const controlCar = await menu.createBlockControlCar();
     const blockRaceField = await raceField.createBlockRaceField();
-    const generateBlockCar = await generate.generateCars('default') 
+    const generateBlockCar = await generate.generateBlockCars('default') 
 
 }
 base.createMainBlock();
@@ -33,23 +37,39 @@ base.createMainBlock();
  menu.createBlockUpdateCar();
  menu.createBlockControlCar();
  menu.clickBtnCreate()
+ winners.creatBlockTableWinners()
  raceField.createBlockRaceField();
- generate.generateCars('default') 
+ generate.generateBlockCars('default') 
+
+ setTimeout(()=>{
+    event.carRace()
+    event.clickBtnGarage()
+    event.clickBtnWinners()
+ }, 500)
 
 
-
-setTimeout(()=>{
-    animationCars.clickBtnStart()
-    animationCars.clickBtnStop()
-    generate.clickBtnSelect()
-    generate.clickBtnRemove()
-}, 500)
-
-
-
-
-
-
+//  const requestDeleteCar = async () =>  {
+//     const url = 'http://127.0.0.1:3000'
+//     const urlGarage = `/garage`
+//     const metod = {'method': 'DELETE'}
+//     for(let i = 0; i < 100; i++){
+//         const response: Response  = await fetch(`${url}${urlGarage}/${i}`, metod);
+//     const json = await response.json()
+//     }
+    
+    
+//     // return json  
+// }
+// requestDeleteCar()
+//  function getRandomColor() {
+//     const letters = '0123456789ABCDEF';
+//     let color = '#';
+//     for (let i = 0; i < 6; i++) {
+//       color += letters[Math.floor(Math.random() * 16)];
+//     }
+//     return console.log(color);
+//   }
+//   getRandomColor()
 
 // move
 
