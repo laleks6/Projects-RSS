@@ -4,7 +4,6 @@ import { Random } from "../random/random";
 import { iNewCar } from "../types";
 import { AnimationCars } from "./animation-car";
 
-
 export class Generate {
     request: Request = new Request
     animationCars: AnimationCars = new AnimationCars
@@ -36,7 +35,7 @@ export class Generate {
         return svg
     }
 //inputName?: string | undefined, inputColor?: string | undefined
-    generateBlockCars = async(count: string) => {
+    generateCars = async(count: string) => {
         let promisDataCars:IGarage[] | undefined 
          const garage = await this.request.requestGarage().
         then(data =>{ return data});
@@ -116,18 +115,18 @@ export class Generate {
                     carAndFlag.append(imgCar);
                     carAndFlag.append(imgFlag);
                 }
+                this.animationCars.clickBtnStart()
+                this.animationCars.clickBtnStop()
+                this.clickBtnSelect()
+                this.clickBtnRemove()
                
             }
         }
-        this.clickBtnSelect()
-        this.clickBtnRemove()
-        this.animationCars.clickBtnStart()
-        this.animationCars.clickBtnStop()
-        
         
     }
 
     clickBtnSelect = () => {
+        
         const blockRace = Array.from((document.getElementsByClassName('block-race')) as HTMLCollectionOf<HTMLElement>)
         const btnRemove = Array.from((document.getElementsByClassName('btn-seclect')) as HTMLCollectionOf<HTMLElement>)
         const inputName = document.getElementById('input-name-update') as HTMLInputElement;
@@ -162,38 +161,21 @@ export class Generate {
             })
         }
 
-
     }
 
     clickBtnRemove = async () => {
-    
-        const btnRemove: NodeListOf<Element> = document.querySelectorAll('.btn-remove')
-        const blockCar: NodeListOf<Element> = document.querySelectorAll('.block-race')
-        const bloc: Element | null = (document.querySelector('.race-field')) 
+        const btnRemove = Array.from((document.getElementsByClassName('btn-remove')) as HTMLCollectionOf<HTMLElement>)
+        const blockCar = Array.from((document.getElementsByClassName('block-race')) as HTMLCollectionOf<HTMLElement>)
         for(let i = 0; i < btnRemove.length; i++) {
-            const eventRemove = async () => {
-                // let car: string | HTMLElement =  blockCar[i] 
+            btnRemove[i].addEventListener('click', async () => {
                 console.log('REMOVE')
-
+                // console.log( btnRemove.length)
+                // console.log( blockCar.length)
                 await this.request.requestDeleteCar(+blockCar[i].id)
                 await this.request.requestGarage()
-           
                 blockCar[i].remove()
-                // const remove = await blockCar[i]!.remove()
-                // blockCar[i].remove()
-               
-                 window.location.reload()
-                // field.removeChild(field.children[i])
-                
-                // console.log(field.children[i])
-                btnRemove[i].removeEventListener('click', eventRemove)
-                
-            }
-            btnRemove[i].addEventListener('click', eventRemove)
-            
-          
+            })
         }
-
 
     }
 
