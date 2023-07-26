@@ -6,6 +6,8 @@ export class AnimationCars {
     
 
     clickBtnStart = () => {
+        const btnStop = Array.from((document.getElementsByClassName('btn-stop-car')) as HTMLCollectionOf<HTMLElement>)
+    
         const btnStart = Array.from((document.getElementsByClassName('btn-start-car')) as HTMLCollectionOf<HTMLElement>)
         const blockCar = Array.from((document.getElementsByClassName('block-car-and-flag')) as HTMLCollectionOf<HTMLElement>)
         const blockRace = Array.from((document.getElementsByClassName('block-race')) as HTMLCollectionOf<HTMLElement>)
@@ -20,8 +22,10 @@ export class AnimationCars {
                 console.log(blockRace[i])
                 blockCar[i]?.classList.add('race--active');
                 this.moveCar(i, +blockRace[i].id)
-                this.timer(0)
-                btnStart[i]?.removeEventListener('click', eventBtnStart)
+                // this.timer(0)
+                
+                btnStart[i]?.setAttribute('disabled', 'true');
+                btnStop[i]?.removeAttribute('disabled')
             }
            }  
             btnStart[i]?.addEventListener('click', eventBtnStart)
@@ -33,6 +37,7 @@ export class AnimationCars {
     clickBtnStop = () =>{
         const btnStop:  HTMLCollectionOf<Element> = document.getElementsByClassName('btn-stop-car');
         const blockCar: HTMLCollectionOf<Element>= document.getElementsByClassName('block-car-and-flag');
+        const btnStart = Array.from((document.getElementsByClassName('btn-start-car')) as HTMLCollectionOf<HTMLElement>)
         const car = Array.from((document.getElementsByClassName('svg-car')) as HTMLCollectionOf<HTMLElement>);
         console.log(`${btnStop.length} - length ${btnStop}`)
         console.log(btnStop)
@@ -42,6 +47,8 @@ export class AnimationCars {
                     console.log('STop')
                     blockCar[i]?.classList.remove('race--active');
                     car[i].style.transform = `translateX(${0}px)`;
+                    btnStart[i]?.removeAttribute('disabled')
+                    btnStop[i]?.setAttribute('disabled', 'true')
                 }
             })
         }

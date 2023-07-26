@@ -28,13 +28,15 @@ export class Event {
         btnGenerate.addEventListener('click', eventGenerateCars)
     }
     carRace = () => {
+        const btnReset: Element = document.getElementsByClassName('btn-reset')[0]
         const btnRace: Element = document.getElementsByClassName('btn-race')[0]
         const raceFields = Array.from(document.getElementsByClassName('block-race') as HTMLCollectionOf<Element>)
         const eventRace =  () => {
             console.log( raceFields)
           for(let i = 0; i < raceFields.length; i++) {
             this.animationCars.moveCar(i, +raceFields[i].id)
-            
+            btnRace.setAttribute('disabled', 'true')
+            btnReset.removeAttribute('disabled')
           }
             
         }

@@ -55,3 +55,19 @@
     border-bottom: 1px dashed black;
     top: -22px;
 }
+
+.block-count {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    color: black;
+    margin-bottom: 20px;
+}
+
+.block-count__page {
+    font-size: 20px;
+}
+
+.block-count_cars{
+    font-size: 30px;
+}

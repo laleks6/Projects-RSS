@@ -1,7 +1,9 @@
-import './components/base/base.css'
+
 import './components/menu/menu.css'
 import './components/race-field/race-field.css'
 import './components/pagination/pagination.css'
+import './components/winners/winners.css'
+import './components/base/base.css'
 import { Base } from "./components/base/base"
 import { ControlMenu } from "./components/menu/menu"
 import { RaceField } from './components/race-field/race-field'

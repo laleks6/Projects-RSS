@@ -120,6 +120,7 @@ export class ControlMenu  {
             btnStart.innerText = 'Race'
             btnReset.innerText = 'Reset'
             btnGenerate.innerText = 'Generate'
+            btnReset.setAttribute('disabled', 'true')
             
             garage.append(blockControlCar);
             blockControlCar.append(btnStart);

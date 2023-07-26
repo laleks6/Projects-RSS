@@ -1,8 +1,9 @@
 #menu {
-    display: block;
-    width: 30%;
-    height: 200px;
-    gap: 10px;
+    display: flex;
+    flex-direction: column;
+    width: 450px;
+    height: 250px;
+    margin-bottom: 30px;
     
 }
 
@@ -15,7 +16,9 @@
     align-items: center;
     max-width: 100%;
 }
-
+/* .block-btns-page-change {
+    margin-bottom: 10px;
+} */
 .btn-Garage, 
 .btn-Winner{
     width: 80px;
@@ -41,5 +44,12 @@
 
 .input-name{
     width: 100px;
+}
+
+.menu__block-Garage {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 50px;
 }
 
