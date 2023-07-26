@@ -4,8 +4,22 @@ import { Request } from "../request/request";
 export class AnimationCars {
     request: Request = new Request()
     
+    carStop = (index:number, svg:HTMLCollectionOf<HTMLElement>, blockCar:HTMLCollectionOf<HTMLElement>, btnStart:HTMLCollectionOf<HTMLElement>, btnStop:HTMLCollectionOf<HTMLElement> ) => {
+        console.log('STop')
+        console.log(index)
+        console.log(svg[index])
+        console.log(blockCar[index])
+        console.log(svg[index].style.transform = `translateX(${0}px)`)
+        svg[index].style.transform = `translateX(${0}px)`;
+        btnStart[index].removeAttribute('disabled')
+        btnStop[index].setAttribute('disabled', 'true')
+        btnStart[index]?.removeAttribute('disabled')
+        btnStop[index]?.setAttribute('disabled', 'true')
+    }
 
     clickBtnStart = () => {
+        const btnStop = Array.from((document.getElementsByClassName('btn-stop-car')) as HTMLCollectionOf<HTMLElement>)
+    
         const btnStart = Array.from((document.getElementsByClassName('btn-start-car')) as HTMLCollectionOf<HTMLElement>)
         const blockCar = Array.from((document.getElementsByClassName('block-car-and-flag')) as HTMLCollectionOf<HTMLElement>)
         const blockRace = Array.from((document.getElementsByClassName('block-race')) as HTMLCollectionOf<HTMLElement>)
@@ -20,8 +34,10 @@ export class AnimationCars {
                 console.log(blockRace[i])
                 blockCar[i]?.classList.add('race--active');
                 this.moveCar(i, +blockRace[i].id)
-                this.timer(0)
-                btnStart[i]?.removeEventListener('click', eventBtnStart)
+                // this.timer(0)
+                
+                btnStart[i]?.setAttribute('disabled', 'true');
+                btnStop[i]?.removeAttribute('disabled')
             }
            }  
             btnStart[i]?.addEventListener('click', eventBtnStart)
@@ -31,17 +47,21 @@ export class AnimationCars {
     }
 
     clickBtnStop = () =>{
-        const btnStop:  HTMLCollectionOf<Element> = document.getElementsByClassName('btn-stop-car');
-        const blockCar: HTMLCollectionOf<Element>= document.getElementsByClassName('block-car-and-flag');
-        const car = Array.from((document.getElementsByClassName('svg-car')) as HTMLCollectionOf<HTMLElement>);
+        const btnStop = document.getElementsByClassName('btn-stop-car')as HTMLCollectionOf<HTMLElement>;
+        const blockCar = document.getElementsByClassName('block-car-and-flag') as HTMLCollectionOf<HTMLElement>;
+        const btnStart = document.getElementsByClassName('btn-start-car') as HTMLCollectionOf<HTMLElement>
+        const car = document.getElementsByClassName('svg-car') as HTMLCollectionOf<HTMLElement>;
         console.log(`${btnStop.length} - length ${btnStop}`)
         console.log(btnStop)
         for(let i = 0; i < btnStop.length; i++){
             btnStop[i]?.addEventListener('click', () => {
                 if(blockCar[i]?.classList.contains('race--active')) {
-                    console.log('STop')
-                    blockCar[i]?.classList.remove('race--active');
-                    car[i].style.transform = `translateX(${0}px)`;
+                    // console.log('STop')
+                    // blockCar[i]?.classList.remove('race--active');
+                    // car[i].style.transform = `translateX(${0}px)`;
+                    // btnStart[i]?.removeAttribute('disabled')
+                    // btnStop[i]?.setAttribute('disabled', 'true')
+                    this.carStop(i, car, blockCar, btnStart, btnStop)
                 }
             })
         }
@@ -54,13 +74,23 @@ export class AnimationCars {
         return statusEror
     }
 
-    moveCar = async (index:number, id:number): Promise<void> => {
+    moveCar = async (index:number, id:number, svg?:HTMLElement[] | undefined ): Promise<void> => {
         console.log(`index-  ${index}`)
         console.log(`id-  ${id}`)
+        let arraySvgCar:HTMLElement[]
         const blockCar = Array.from((document.getElementsByClassName('img-car')) as HTMLCollectionOf<HTMLElement>)[0];
         const car = Array.from((document.getElementsByClassName('svg-car')) as HTMLCollectionOf<HTMLElement>);
         const statusEngin = await this.request.requestFrameStartEngine(id)
-
+        console.log('BLOCK MOVE')
+        console.log(Array.from(document.getElementsByClassName('block-race') as HTMLCollectionOf<Element>))
+        // if(svg === undefined) {
+        //     arraySvgCar = car
+        //     console.log('unefinded svg')
+        // }else {
+        //     arraySvgCar = svg
+        //     console.log('noneunefinded svg')
+        // }
+      
         let startPoint = 0;
         const velocity = statusEngin.velocity
         const distance = statusEngin.distance
@@ -74,7 +104,7 @@ export class AnimationCars {
         const dx = (widthRoad - startPoint) / frame
         console.log(time)
         // console.log(statusEngin)
-        
+        console.log(index +  '----проверка индекса')
         const moveFrame = () => {
             let countWinners = 0
             if(startPoint > widthRoad) {
@@ -89,13 +119,13 @@ export class AnimationCars {
             }
             if(startPoint === 1) {
                 console.log('rEALfinish---500')
-                console.log(startPoint);
+                 console.log(startPoint);
                 this.timer(1)
                 const statusEnginStop = this.request.requestFrameStopEngine(id);  
             }
 
             if(startPoint < widthRoad && startPoint !== 1) {
-                console.log(startPoint);
+               
                 car[index].style.transform = `translateX(${startPoint+=dx}px)`;
                 const animationFrame = requestAnimationFrame(moveFrame);
             } 

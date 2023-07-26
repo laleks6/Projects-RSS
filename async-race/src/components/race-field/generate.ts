@@ -5,7 +5,9 @@ import { iNewCar } from "../types";
 import { AnimationCars } from "./animation-car";
 
 
+
 export class Generate {
+
     request: Request = new Request
     animationCars: AnimationCars = new AnimationCars
     
@@ -36,7 +38,7 @@ export class Generate {
         return svg
     }
 //inputName?: string | undefined, inputColor?: string | undefined
-    generateBlockCars = async(count: string) => {
+    generateBlockCars = async(count: string, array?: IGarage[]) => {
         let promisDataCars:IGarage[] | undefined 
          const garage = await this.request.requestGarage().
         then(data =>{ return data});
@@ -47,83 +49,98 @@ export class Generate {
         }else if(count === 'newCar'){
             promisDataCars = await this.request.getRequestCar(+garage[garage.length-1].id).
             then(data =>{ return [data]}) ;
+        }else if(count === 'pagination'){
+            this.deleteBlocs()
+            promisDataCars = array;
         }
         
         if (promisDataCars !== undefined) {
            
-            for (let i = 0; i < promisDataCars.length; i++) {  
-                const name = promisDataCars[i].name;
-                const color = promisDataCars[i].color ;
-                const id = promisDataCars[i].id 
-
-                
-                // const id: number = promisDataCars[i].id;
+            for (let i = 0; i < promisDataCars.length; i++) {
+                if(i < 7) {
+                    const name = promisDataCars[i].name;
+                    const color = promisDataCars[i].color ;
+                    const id = promisDataCars[i].id 
     
-                const raceField: HTMLElement | null = document.getElementById('race-field');  
-                const blockRace: HTMLElement = document.createElement('div');
-                const carInfo: HTMLElement = document.createElement('div');
-                const btnSelect: HTMLElement = document.createElement('button');
-                const btnRemove: HTMLElement = document.createElement('button');
-                const carBrand: HTMLElement = document.createElement('span');
-                const blockCar: HTMLElement = document.createElement('div');
-                const controlCar: HTMLElement = document.createElement('div');
-                const btnContols: HTMLElement = document.createElement('div');
-                const btnStart: HTMLElement = document.createElement('button');
-                const btnStop: HTMLElement = document.createElement('button');
-                const carAndFlag: HTMLElement = document.createElement('div');
-                const imgCar: HTMLElement = document.createElement('div');
-                const imgFlag: HTMLElement = document.createElement('div');
-                const roadRace: HTMLElement = document.createElement('div');
-    
-                blockRace.className = 'block-race';
-                blockRace.id = `${id}`;
-                carInfo.className = 'block-race__car-info';
-                btnSelect.className = 'btn btn-seclect';
-                btnRemove.className = 'btn btn-remove';
-                carBrand.className = 'car-brand';
-                blockCar.className = 'block-car';
-                controlCar.className = 'control-car';
-                btnContols.className = 'control-car__btns';
-                btnStart.className = 'btn btn-start-car';
-                btnStop.className = 'bnt btn-stop-car';
-                carAndFlag.className = 'block-car-and-flag';
-                imgCar.className = 'img-car';
-                imgFlag.className = 'img-flag'
-                roadRace.className = 'road-race';
-                carBrand.className = 'car-brand';
-    
-                btnStart.innerText = 'Start'
-                btnStop.innerText = 'Stop'
-                
-                carBrand.innerText = name ;
-                imgCar.innerHTML = this.#addsvg(color)
-                imgFlag.innerHTML = this.#addsvg()
-                btnSelect.innerText = 'SELECT'
-                btnRemove.innerText = 'REMOVE'
-                if(raceField !== null) {
-                    raceField.append(blockRace);
-                    blockRace.append(carInfo);
-                    blockRace.append(blockCar);
-                    carInfo.append(btnSelect);
-                    carInfo.append(btnRemove);
-                    carInfo.append(carBrand);
-                    blockCar.append(controlCar);
-                    blockCar.append(roadRace);
-                    controlCar.append(btnContols);
-                    controlCar.append(carAndFlag)
-                    btnContols.append(btnStart);
-                    btnContols.append(btnStop);
-                    carAndFlag.append(imgCar);
-                    carAndFlag.append(imgFlag);
+                    
+                    // const id: number = promisDataCars[i].id;
+        
+                    const raceField: HTMLElement | null = document.getElementById('race-field');  
+                    const blockRace: HTMLElement = document.createElement('div');
+                    const carInfo: HTMLElement = document.createElement('div');
+                    const btnSelect: HTMLElement = document.createElement('button');
+                    const btnRemove: HTMLElement = document.createElement('button');
+                    const carBrand: HTMLElement = document.createElement('span');
+                    const blockCar: HTMLElement = document.createElement('div');
+                    const controlCar: HTMLElement = document.createElement('div');
+                    const btnContols: HTMLElement = document.createElement('div');
+                    const btnStart: HTMLElement = document.createElement('button');
+                    const btnStop: HTMLElement = document.createElement('button');
+                    const carAndFlag: HTMLElement = document.createElement('div');
+                    const imgCar: HTMLElement = document.createElement('div');
+                    const imgFlag: HTMLElement = document.createElement('div');
+                    const roadRace: HTMLElement = document.createElement('div');
+        
+                    blockRace.className = 'block-race';
+                    blockRace.id = `${id}`;
+                    carInfo.className = 'block-race__car-info';
+                    btnSelect.className = 'btn btn-seclect';
+                    btnRemove.className = 'btn btn-remove';
+                    carBrand.className = 'car-brand';
+                    blockCar.className = 'block-car';
+                    controlCar.className = 'control-car';
+                    btnContols.className = 'control-car__btns';
+                    btnStart.className = 'btn btn-start-car';
+                    btnStop.className = 'bnt btn-stop-car';
+                    carAndFlag.className = 'block-car-and-flag';
+                    imgCar.className = 'img-car';
+                    imgFlag.className = 'img-flag'
+                    roadRace.className = 'road-race';
+                    carBrand.className = 'car-brand';
+        
+                    btnStart.innerText = 'Start'
+                    btnStop.innerText = 'Stop'
+                    
+                    carBrand.innerText = name ;
+                    imgCar.innerHTML = this.#addsvg(color)
+                    imgFlag.innerHTML = this.#addsvg()
+                    btnSelect.innerText = 'SELECT'
+                    btnRemove.innerText = 'REMOVE'
+                    btnStop?.setAttribute('disabled', 'true')
+                    if(raceField !== null) {
+                        raceField.append(blockRace);
+                        blockRace.append(carInfo);
+                        blockRace.append(blockCar);
+                        carInfo.append(btnSelect);
+                        carInfo.append(btnRemove);
+                        carInfo.append(carBrand);
+                        blockCar.append(controlCar);
+                        blockCar.append(roadRace);
+                        controlCar.append(btnContols);
+                        controlCar.append(carAndFlag)
+                        btnContols.append(btnStart);
+                        btnContols.append(btnStop);
+                        carAndFlag.append(imgCar);
+                        carAndFlag.append(imgFlag);
+                    }
+                   
                 }
-               
-            }
+                }  
+
         }
         this.clickBtnSelect()
         this.clickBtnRemove()
         this.animationCars.clickBtnStart()
         this.animationCars.clickBtnStop()
         
+        
+    }
+
+    deleteBlocs = () => {
+        const blockRace = Array.from((document.getElementsByClassName('block-race')) as HTMLCollectionOf<HTMLElement>)
+        for(let i = 0; i< blockRace.length; i++) {
+            blockRace[i].remove()
+        }
         
     }
 

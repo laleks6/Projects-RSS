@@ -3,6 +3,7 @@ import { Random } from "../random/random";
 import { iNewCar } from "../types";
 import { Request } from "../request/request"; 
 import { AnimationCars } from "../race-field/animation-car";
+import { IGarage } from "components/types";
 
 
 export class Event {
@@ -27,18 +28,55 @@ export class Event {
         }
         btnGenerate.addEventListener('click', eventGenerateCars)
     }
-    carRace = () => {
-        const btnRace: Element = document.getElementsByClassName('btn-race')[0]
-        const raceFields = Array.from(document.getElementsByClassName('block-race') as HTMLCollectionOf<Element>)
+    carRace = async (array?: HTMLElement[] | undefined, arraySvg?: HTMLElement[] | undefined) => {
+        const btnReset = document.getElementsByClassName('btn-reset')[0] as HTMLElement
+        const btnRace = document.getElementsByClassName('btn-race')[0] as HTMLElement
+        const raceFields = document.getElementsByClassName('block-race') as HTMLCollectionOf<HTMLElement>
+        const btnStop = document.getElementsByClassName('btn-stop-car') as HTMLCollectionOf<HTMLElement>
+        const btnStart = document.getElementsByClassName('btn-start-car') as HTMLCollectionOf<HTMLElement>
+       
         const eventRace =  () => {
-            console.log( raceFields)
-          for(let i = 0; i < raceFields.length; i++) {
-            this.animationCars.moveCar(i, +raceFields[i].id)
-            
-          }
+            console.log('raceField carrace ')
+            // console.log(array)
+            // if(array === undefined) {
+            //     arrayCar = raceFields
+            // }else{
+            //     arrayCar = array
+            // }
+            console.log(raceFields)
+            for(let i = 0; i < raceFields.length; i++) {
+                raceFields[i].classList.add('race--active');
+                this.animationCars.moveCar(i, +raceFields[i].id)
+                btnStart[i].setAttribute('disabled', 'true');
+                btnStop[i].removeAttribute('disabled')
+            }
+            btnRace.setAttribute('disabled', 'true')
+            btnReset.removeAttribute('disabled')
             
         }
         btnRace.addEventListener('click', eventRace)
+        
+        this.carReset()
+    }
+    carReset = (array?: HTMLElement[] | undefined) => {
+        const btnReset = document.getElementsByClassName('btn-reset')[0] as HTMLElement
+        const btnRace = document.getElementsByClassName('btn-race')[0] as HTMLElement
+        const raceFields = document.getElementsByClassName('block-race') as HTMLCollectionOf<HTMLElement>
+        const btnStop = document.getElementsByClassName('btn-stop-car')as HTMLCollectionOf<HTMLElement>;
+        const blockCar = document.getElementsByClassName('block-car-and-flag') as HTMLCollectionOf<HTMLElement>;
+        const btnStart = document.getElementsByClassName('btn-start-car') as HTMLCollectionOf<HTMLElement>
+        const car = document.getElementsByClassName('svg-car') as HTMLCollectionOf<HTMLElement>;
+        btnReset.addEventListener('click', () => {
+            for(let i = 0; i < car.length; i++) {
+                raceFields[i].classList.remove('race--active');
+                this.animationCars.carStop(i, car, blockCar, btnStart, btnStop )
+
+            }
+            btnRace.setAttribute('disabled', 'true')
+            btnReset.removeAttribute('disabled')
+                 
+
+        })
     }
     clickBtnWinners = () => {
         const btnWinners = document.getElementsByClassName('btn-Winner')[0] as HTMLButtonElement;
