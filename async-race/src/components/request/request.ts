@@ -5,14 +5,14 @@ export class Request {
         const urlGarage = `/garage`
         const response  = await fetch(`${this.url}${urlGarage}`);
         const json: IGarage[] = await response.json();
-        console.log(json)
+        // console.log(json)
         return json  
     }
     getRequestCar = async (id:number) =>  {
         const urlGarage = `/garage`
         const response  = await fetch(`${this.url}${urlGarage}/${id}`);
         const json: IGarage = await response.json();
-        console.log(json)
+        // console.log(json)
         return json  
     }
     requestFrameStartEngine = async (id: number) =>  {

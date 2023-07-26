@@ -1,7 +1,9 @@
-import './components/base/base.css'
+
 import './components/menu/menu.css'
 import './components/race-field/race-field.css'
 import './components/pagination/pagination.css'
+import './components/winners/winners.css'
+import './components/base/base.css'
 import { Base } from "./components/base/base"
 import { ControlMenu } from "./components/menu/menu"
 import { RaceField } from './components/race-field/race-field'
@@ -11,6 +13,7 @@ import { Random } from './components/random/random'
 import { Event } from './components/event/event'
 import { Winners } from './components/winners/winners'
 import { Pagination } from './components/pagination/pagination'
+import { LocalStorage } from './components/local-storage/storage'
 
 const base = new Base()
 const menu = new ControlMenu()
@@ -21,6 +24,7 @@ const animationCars = new AnimationCars()
 const random = new Random()
 const event = new Event()
 const pagination = new Pagination()
+const localStorage = new LocalStorage()
 // random.createNameCar()
 const createMenu = async() => {
     const main = await base.createMainBlock();
@@ -42,14 +46,19 @@ base.createMainBlock();
  menu.clickBtnCreate()
  winners.creatBlockTableWinners()
  raceField.createBlockRaceField();
- generate.generateBlockCars('default') 
+// generate.generateBlockCars('default') 
+const pageId: string | null = localStorage.getLocalSorage('pageActive')
+if(pageId !== null) {
+    pagination.test(+pageId)
+}
 
 
  setTimeout(()=>{
-    event.carRace()
+    pagination.pagination()
     event.clickBtnGarage()
     event.clickBtnWinners()
-    pagination.pagination()
+    event.carRace()
+    event.carReset()
  }, 500)
 
 
